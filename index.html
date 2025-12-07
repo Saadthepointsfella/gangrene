@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaxMin — Marketing Analytics & Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5F2EB;
+      --black: #1A1A1A;
+      --red: #C54B4B;
+      --gray: #8A8A8A;
+      --light-gray: #E8E5DE;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--cream);
+      font-family: 'Space Mono', monospace;
+      color: var(--black);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* Grid lines overlay */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      opacity: 0.04;
+    }
+
+    .grid-overlay div {
+      border-left: 1px solid var(--black);
+    }
+
+    .grid-overlay div:last-child {
+      border-right: 1px solid var(--black);
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .nav-logo {
+      grid-column: span 3;
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo svg {
+      height: 50px;
+      width: auto;
+    }
+
+    .nav-links {
+      grid-column: span 6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      padding: 1.5rem 0;
+    }
+
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--black);
+      transform: scaleX(1);
+    }
+
+    .nav-contact {
+      grid-column: span 3;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+
+    .nav-contact a {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--black);
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .nav-contact a span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      padding: 0 3rem;
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .hero-cell {
+      background: var(--cream);
+    }
+
+    .hero-title-area {
+      grid-column: 1 / 7;
+      grid-row: 3 / 6;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem;
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      overflow: hidden;
+    }
+
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-title .word {
+      display: inline-block;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      position: relative;
+    }
+
+    .hero-title em::after {
+      content: '';
+      position: absolute;
+      bottom: 0.1em;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(1);
+    }
+
+    .hero-subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-top: 2rem;
+      max-width: 300px;
+      line-height: 1.8;
+    }
+
+    .hero-black-block {
+      grid-column: 7 / 11;
+      grid-row: 1 / 4;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Refined thin lines inside black block */
+    .hero-black-block .line-h {
+      position: absolute;
+      height: 1px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .hero-black-block .line-v {
+      position: absolute;
+      width: 1px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .hero-black-block .line-h-1 {
+      width: 0%;
+      top: 25%;
+      left: 15%;
+      animation: lineGrowH 3s ease-out forwards, lineFloat 8s ease-in-out infinite 3s;
+    }
+
+    .hero-black-block .line-h-2 {
+      width: 0%;
+      top: 50%;
+      right: 10%;
+      left: auto;
+      background: rgba(197, 75, 75, 0.5);
+      animation: lineGrowH2 3s ease-out forwards 0.3s, lineFloat 10s ease-in-out infinite 3.3s;
+    }
+
+    .hero-black-block .line-h-3 {
+      width: 0%;
+      bottom: 30%;
+      left: 25%;
+      animation: lineGrowH3 3s ease-out forwards 0.6s, lineFloat 12s ease-in-out infinite 3.6s;
+    }
+
+    .hero-black-block .line-h-4 {
+      width: 0%;
+      top: 70%;
+      left: 5%;
+      animation: lineGrowH4 3s ease-out forwards 0.9s, lineFloat 9s ease-in-out infinite 3.9s;
+    }
+
+    .hero-black-block .line-v-1 {
+      height: 0%;
+      top: 10%;
+      left: 30%;
+      animation: lineGrowV 3s ease-out forwards 0.2s, lineFloatV 9s ease-in-out infinite 3.2s;
+    }
+
+    .hero-black-block .line-v-2 {
+      height: 0%;
+      bottom: 15%;
+      right: 25%;
+      top: auto;
+      animation: lineGrowV2 3s ease-out forwards 0.5s, lineFloatV 11s ease-in-out infinite 3.5s;
+    }
+
+    .hero-black-block .line-v-3 {
+      height: 0%;
+      top: 20%;
+      right: 40%;
+      background: rgba(197, 75, 75, 0.3);
+      animation: lineGrowV3 3s ease-out forwards 0.8s, lineFloatV 13s ease-in-out infinite 3.8s;
+    }
+
+    @keyframes lineGrowH {
+      0% { width: 0%; opacity: 0; }
+      100% { width: 55%; opacity: 1; }
+    }
+
+    @keyframes lineGrowH2 {
+      0% { width: 0%; opacity: 0; }
+      100% { width: 45%; opacity: 1; }
+    }
+
+    @keyframes lineGrowH3 {
+      0% { width: 0%; opacity: 0; }
+      100% { width: 35%; opacity: 1; }
+    }
+
+    @keyframes lineGrowH4 {
+      0% { width: 0%; opacity: 0; }
+      100% { width: 50%; opacity: 1; }
+    }
+
+    @keyframes lineGrowV {
+      0% { height: 0%; opacity: 0; }
+      100% { height: 50%; opacity: 1; }
+    }
+
+    @keyframes lineGrowV2 {
+      0% { height: 0%; opacity: 0; }
+      100% { height: 35%; opacity: 1; }
+    }
+
+    @keyframes lineGrowV3 {
+      0% { height: 0%; opacity: 0; }
+      100% { height: 40%; opacity: 1; }
+    }
+
+    .hero-black-block .dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0;
+      animation: dotAppear 0.5s ease-out forwards, dotPulse 4s ease-in-out infinite;
+    }
+
+    .hero-black-block .dot-1 {
+      top: 25%;
+      left: 15%;
+      animation-delay: 1s, 1.5s;
+    }
+
+    .hero-black-block .dot-2 {
+      top: 50%;
+      right: 10%;
+      animation-delay: 1.3s, 1.8s;
+    }
+
+    .hero-black-block .dot-3 {
+      bottom: 30%;
+      left: 60%;
+      animation-delay: 1.6s, 2.1s;
+    }
+
+    .hero-black-block .dot-4 {
+      top: 70%;
+      left: 55%;
+      animation-delay: 1.9s, 2.4s;
+    }
+
+    .hero-black-block .dot-5 {
+      top: 10%;
+      left: 30%;
+      background: rgba(255,255,255,0.4);
+      animation-delay: 2.2s, 2.7s;
+    }
+
+    /* Corner brackets */
+    .hero-black-block .bracket {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      opacity: 0;
+      animation: bracketAppear 0.8s ease-out forwards;
+    }
+
+    .hero-black-block .bracket::before,
+    .hero-black-block .bracket::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .hero-black-block .bracket-tl {
+      top: 12%;
+      left: 12%;
+      animation-delay: 1.2s;
+    }
+
+    .hero-black-block .bracket-tl::before {
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+    }
+
+    .hero-black-block .bracket-tl::after {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+    }
+
+    .hero-black-block .bracket-br {
+      bottom: 35%;
+      right: 12%;
+      animation-delay: 1.5s;
+    }
+
+    .hero-black-block .bracket-br::before {
+      bottom: 0;
+      right: 0;
+      width: 1px;
+      height: 100%;
+    }
+
+    .hero-black-block .bracket-br::after {
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 1px;
+    }
+
+    @keyframes dotAppear {
+      0% { opacity: 0; transform: scale(0); }
+      100% { opacity: 0.8; transform: scale(1); }
+    }
+
+    @keyframes bracketAppear {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes lineFloat {
+      0%, 100% { transform: translateX(0); opacity: 0.15; }
+      50% { transform: translateX(8px); opacity: 0.25; }
+    }
+
+    @keyframes lineFloatV {
+      0%, 100% { transform: translateY(0); opacity: 0.15; }
+      50% { transform: translateY(-8px); opacity: 0.25; }
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.8); opacity: 1; }
+    }
+
+    .hero-red-block {
+      grid-column: 11 / 13;
+      grid-row: 4 / 7;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .hero-red-block .plus {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+      font-size: 3rem;
+      color: var(--cream);
+      opacity: 1;
+      animation: weavePlus 8s ease-in-out infinite;
+    }
+
+    @keyframes weavePlus {
+      0%, 100% { transform: translate(-50%, -50%) rotate(90deg) scale(1); }
+      50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+    }
+
+    .hero-text-block {
+      grid-column: 8 / 12;
+      grid-row: 5 / 7;
+      background: var(--cream);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .hero-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .hero-line {
+      height: 2px;
+      background: var(--black);
+      position: relative;
+    }
+
+    .hero-line::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      opacity: 1;
+      animation: dotWeave 6s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .hero-line:nth-child(2)::after { animation-delay: 0.5s; }
+    .hero-line:nth-child(3)::after { animation-delay: 1s; }
+    .hero-line:nth-child(4)::after { animation-delay: 1.5s; }
+
+    @keyframes dotWeave {
+      0%, 100% { left: 0; }
+      50% { left: calc(100% - 8px); }
+    }
+
+    .hero-scroll {
+      grid-column: 1 / 3;
+      grid-row: 7 / 9;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .scroll-indicator {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .scroll-indicator::before {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: var(--black);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.5; }
+    }
+
+    .hero-letter {
+      grid-column: 3 / 5;
+      grid-row: 6 / 8;
+      background: var(--cream);
+      display: flex;
+      align-items: flex-start;
+      padding: 1.5rem;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .hero-letter span {
+      font-family: 'Newsreader', serif;
+      font-size: 6rem;
+      line-height: 1;
+      color: var(--red);
+      animation: letterWeave 10s ease-in-out infinite;
+    }
+
+    @keyframes letterWeave {
+      0%, 100% { transform: scale(1.2) translateY(-10px); }
+      50% { transform: scale(1.15) translateY(-5px); }
+    }
+
+    /* About Section */
+    .about {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .about-sidebar {
+      grid-column: span 3;
+      padding: 4rem 2rem 4rem 0;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .section-number {
+      font-family: 'Newsreader', serif;
+      font-size: 4rem;
+      font-weight: 400;
+      line-height: 1;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-number::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--red);
+      transform: scaleX(1);
+    }
+
+    .about-content {
+      grid-column: span 6;
+      padding: 4rem 3rem;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .about-dropcap {
+      font-family: 'Newsreader', serif;
+      font-size: 7rem;
+      line-height: 0.8;
+      float: left;
+      margin-right: 1rem;
+      margin-top: 0.75rem;
+      color: var(--red);
+      animation: dropcapWeave 8s ease-in-out infinite;
+    }
+
+    @keyframes dropcapWeave {
+      0%, 100% { transform: scale(1.1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .about-text {
+      font-family: 'Newsreader', serif;
+      font-size: 1.15rem;
+      line-height: 1.85;
+      text-align: justify;
+      hyphens: auto;
+      color: var(--black);
+    }
+
+    .about-text + .about-text {
+      margin-top: 1.5rem;
+      text-indent: 2rem;
+    }
+
+    .about-aside {
+      grid-column: span 3;
+      padding: 4rem 0 4rem 2rem;
+    }
+
+    .aside-item {
+      margin-bottom: 2.5rem;
+      transform: translateX(10px);
+    }
+
+    .aside-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+
+    .aside-value {
+      font-family: 'Newsreader', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Services Section */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      background: var(--cream);
+      color: var(--black);
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .services-header {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 3rem 0;
+    }
+
+    .services-title {
+      grid-column: span 6;
+      font-family: 'Newsreader', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 400;
+    }
+
+    .services-desc {
+      grid-column: 8 / 12;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .services-grid {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    .service-card {
+      background: var(--cream);
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 350px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--black);
+      transform: translateY(100%);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .service-card.animate::before {
+      transform: translateY(0);
+    }
+
+    .service-card:nth-child(2)::before { transition-delay: 0.1s; }
+    .service-card:nth-child(3)::before { transition-delay: 0.2s; }
+    .service-card:nth-child(4)::before { transition-delay: 0.3s; }
+
+    .service-card > * {
+      position: relative;
+      z-index: 1;
+      transition: color 0.4s ease 0.3s, opacity 0.4s ease 0.3s;
+    }
+
+    .service-card:nth-child(2) > * { transition-delay: 0.4s; }
+    .service-card:nth-child(3) > * { transition-delay: 0.5s; }
+    .service-card:nth-child(4) > * { transition-delay: 0.6s; }
+
+    .service-card.animate > * {
+      color: var(--cream);
+    }
+
+    .service-number {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      margin-bottom: auto;
+    }
+
+    .service-card.animate .service-number {
+      color: var(--red);
+    }
+
+    .service-name {
+      font-family: 'Newsreader', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-desc {
+      font-size: 0.7rem;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .service-card.animate .service-desc {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .service-icon {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transform: rotate(0deg) scale(1);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0.4s;
+    }
+
+    .service-card:nth-child(2) .service-icon { transition-delay: 0.5s; }
+    .service-card:nth-child(3) .service-icon { transition-delay: 0.6s; }
+    .service-card:nth-child(4) .service-icon { transition-delay: 0.7s; }
+
+    .service-card.animate .service-icon {
+      transform: rotate(45deg) scale(1.2);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* Methodology Section (replaces Work/Case Studies) */
+    .methodology {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .methodology-header {
+      grid-column: span 12;
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 4rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .methodology-title {
+      grid-column: span 6;
+      font-family: 'Newsreader', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 400;
+    }
+
+    .methodology-desc {
+      grid-column: 8 / 13;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .methodology-grid {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    .method-card {
+      background: var(--cream);
+      padding: 3rem 2rem;
+      position: relative;
+      min-height: 320px;
+    }
+
+    .method-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .method-number {
+      font-family: 'Newsreader', serif;
+      font-size: 3rem;
+      color: var(--red);
+      opacity: 0.3;
+      margin-bottom: 1rem;
+    }
+
+    .method-title {
+      font-family: 'Newsreader', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .method-desc {
+      font-size: 0.7rem;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .method-tags {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .method-tag {
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      color: var(--gray);
+    }
+
+    /* Tech Stack Section */
+    .stack {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      background: var(--cream);
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .stack-header {
+      grid-column: span 3;
+      padding: 4rem 2rem 4rem 0;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .stack-content {
+      grid-column: span 3;
+      padding: 4rem 2rem;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .stack-intro {
+      font-family: 'Newsreader', serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gray);
+    }
+
+    .stack-grid {
+      grid-column: span 6;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    .stack-category {
+      background: var(--cream);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stack-category::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--red);
+      transform: scaleX(1);
+    }
+
+    .stack-category-title {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+
+    .stack-items {
+      font-family: 'Newsreader', serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      transform: translateX(5px);
+    }
+
+    /* Metrics Section (replaces Testimonial) */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      background: var(--cream);
+      border-top: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .metrics-content {
+      grid-column: 2 / 12;
+      padding: 5rem 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .metric-item {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .metric-item::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    .metric-item:last-child::after {
+      display: none;
+    }
+
+    .metric-value {
+      font-family: 'Newsreader', serif;
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* Contact Section */
+    .contact {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .contact-left {
+      grid-column: span 6;
+      background: var(--cream);
+      color: var(--black);
+      padding: 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-left::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, var(--red) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .contact-left:hover::before {
+      opacity: 0.05;
+    }
+
+    .contact-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .contact-title {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: auto;
+    }
+
+    .contact-email {
+      font-family: 'Newsreader', serif;
+      font-size: 1.25rem;
+      color: var(--black);
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-email::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--black);
+    }
+
+    .contact-right {
+      grid-column: span 6;
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .contact-block {
+      background: var(--light-gray);
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-block-title {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .contact-block-content {
+      font-family: 'Newsreader', serif;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .contact-block-content a {
+      color: var(--red);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .contact-block-content a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--red);
+    }
+
+    /* Footer */
+    footer {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 2rem 3rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .footer-left {
+      grid-column: span 6;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .footer-right {
+      grid-column: span 6;
+      display: flex;
+      justify-content: flex-end;
+      gap: 2rem;
+    }
+
+    .footer-right a {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--black);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .footer-right a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--black);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .cursor { display: none; }
+      
+      nav, .hero, .about, .services, .methodology, .stack, .metrics, .contact, footer {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      .grid-overlay {
+        padding: 0 1.5rem;
+      }
+
+      .hero {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: auto;
+      }
+
+      .hero-title-area {
+        grid-column: 1 / 7;
+        grid-row: 2 / 3;
+        padding: 4rem 2rem;
+      }
+
+      .hero-black-block {
+        grid-column: 1 / 5;
+        grid-row: 1;
+        min-height: 30vh;
+      }
+
+      .hero-red-block {
+        grid-column: 5 / 7;
+        grid-row: 1;
+      }
+
+      .hero-text-block {
+        grid-column: 1 / 5;
+        grid-row: 3;
+      }
+
+      .hero-scroll,
+      .hero-letter {
+        display: none;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .about-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        padding: 3rem 0;
+      }
+
+      .about-content {
+        border-right: none;
+        padding: 3rem 0;
+      }
+
+      .about-aside {
+        padding: 3rem 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .aside-item {
+        margin-bottom: 0;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .methodology-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stack {
+        grid-template-columns: 1fr;
+      }
+
+      .stack-header {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        padding: 3rem 0;
+      }
+
+      .stack-content {
+        border-right: none;
+        padding: 3rem 0;
+      }
+
+      .stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .metrics-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .contact-left,
+      .contact-right {
+        grid-column: span 12;
+      }
+
+      .contact-left {
+        min-height: 50vh;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-logo {
+        grid-column: span 6;
+      }
+
+      .nav-contact {
+        grid-column: span 6;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .methodology-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-content {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-item::after {
+        display: none;
+      }
+
+      .contact-right {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Grid Overlay -->
+<div class="grid-overlay">
+  <div></div><div></div><div></div><div></div><div></div><div></div>
+  <div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="55" height="50">
+      <path d="M8,72 L40,12 L72,72 Z" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linejoin="miter"/>
+      <path d="M28,18 L92,18 L60,78 Z" fill="none" stroke="#C54B4B" stroke-width="4.5" stroke-linejoin="miter"/>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <a href="#about" data-hover>About</a>
+    <a href="#services" data-hover>Services</a>
+    <a href="#methodology" data-hover>Methodology</a>
+    <a href="#contact" data-hover>Contact</a>
+  </div>
+  <div class="nav-contact">
+    <a href="#contact" data-hover><span>Get in Touch</span></a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 1;"></div>
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 1;"></div>
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 1;"></div>
+  <div class="hero-black-block">
+    <div class="line-h line-h-1"></div>
+    <div class="line-h line-h-2"></div>
+    <div class="line-h line-h-3"></div>
+    <div class="line-h line-h-4"></div>
+    <div class="line-v line-v-1"></div>
+    <div class="line-v line-v-2"></div>
+    <div class="line-v line-v-3"></div>
+    <div class="dot dot-1"></div>
+    <div class="dot dot-2"></div>
+    <div class="dot dot-3"></div>
+    <div class="dot dot-4"></div>
+    <div class="dot dot-5"></div>
+    <div class="bracket bracket-tl"></div>
+    <div class="bracket bracket-br"></div>
+  </div>
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 1;"></div>
+  <div class="hero-cell" style="grid-column: span 6; grid-row: 2;"></div>
+  <div class="hero-cell" style="grid-column: span 4; grid-row: 2;"></div>
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 2;"></div>
+  <div class="hero-title-area">
+    <h1 class="hero-title">
+      <span class="line"><span class="word">Do</span> <span class="word">more</span></span>
+      <span class="line"><span class="word">with</span> <em>less</em></span>
+    </h1>
+    <p class="hero-subtitle">Business analytics for companies that act on data</p>
+  </div>
+  <div class="hero-cell" style="grid-column: span 2; grid-row: 3/5;"></div>
+  <div class="hero-red-block">
+    <span class="plus">+</span>
+  </div>
+  <div class="hero-text-block">
+    <div class="hero-lines">
+      <div class="hero-line" style="width: 100%;"></div>
+      <div class="hero-line" style="width: 75%;"></div>
+      <div class="hero-line" style="width: 88%;"></div>
+      <div class="hero-line" style="width: 60%;"></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-indicator">Scroll</span>
+  </div>
+  <div class="hero-letter">
+    <span>Δ</span>
+  </div>
+  <div class="hero-cell" style="grid-column: span 8; grid-row: 8;"></div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-sidebar">
+    <p class="section-label">About</p>
+    <span class="section-number">01</span>
+  </div>
+  <div class="about-content">
+    <span class="about-dropcap">W</span>
+    <p class="about-text">e build the analytical infrastructure that lets you make better decisions faster. Attribution models, forecasts, customer segmentation, pipeline analysis—whatever the question, we find the answer in your data and make it actionable.</p>
+    <p class="about-text">Small team. Senior practitioners. No dashboards that nobody opens.</p>
+  </div>
+  <div class="about-aside">
+    <div class="aside-item">
+      <p class="aside-label">Focus</p>
+      <p class="aside-value">Analytics that drives decisions, not reports that collect dust</p>
+    </div>
+    <div class="aside-item">
+      <p class="aside-label">Approach</p>
+      <p class="aside-value">Senior practitioners<br>No fluff<br>Assets you own</p>
+    </div>
+    <div class="aside-item">
+      <p class="aside-label">Outcome</p>
+      <p class="aside-value">Faster decisions<br>Less waste<br>Compounding returns</p>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="services-header">
+    <h2 class="services-title">What we do</h2>
+    <p class="services-desc">From raw data to decisions. Every engagement ends with assets you own and recommendations you can act on.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-number">01</span>
+      <h3 class="service-name">Marketing Mix Modeling</h3>
+      <p class="service-desc">Channel attribution and budget optimization. Know what's working before you spend more.</p>
+      <div class="service-icon">↗</div>
+    </div>
+    <div class="service-card">
+      <span class="service-number">02</span>
+      <h3 class="service-name">Customer Intelligence</h3>
+      <p class="service-desc">Segmentation, lifetime value, churn prediction. Understand who buys and why they leave.</p>
+      <div class="service-icon">↗</div>
+    </div>
+    <div class="service-card">
+      <span class="service-number">03</span>
+      <h3 class="service-name">Pipeline & Funnel Analytics</h3>
+      <p class="service-desc">Conversion modeling, lead scoring, sales cycle analysis. See where deals stall and why.</p>
+      <div class="service-icon">↗</div>
+    </div>
+    <div class="service-card">
+      <span class="service-number">04</span>
+      <h3 class="service-name">Forecasting</h3>
+      <p class="service-desc">Sales, demand, capacity. Plan with confidence intervals, not gut feel.</p>
+      <div class="service-icon">↗</div>
+    </div>
+    <div class="service-card">
+      <span class="service-number">05</span>
+      <h3 class="service-name">Pricing & Promotion</h3>
+      <p class="service-desc">Elasticity analysis, discount optimization. Stop leaving margin on the table.</p>
+      <div class="service-icon">↗</div>
+    </div>
+    <div class="service-card">
+      <span class="service-number">06</span>
+      <h3 class="service-name">BI Infrastructure</h3>
+      <p class="service-desc">Dashboards, reporting, data pipelines. Self-serve analytics that people actually use.</p>
+      <div class="service-icon">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- Methodology (replaces Case Studies) -->
+<section class="methodology" id="methodology">
+  <div class="methodology-header">
+    <h2 class="methodology-title">How we work</h2>
+    <p class="methodology-desc">Scope → Build → Validate → Deliver. Every engagement ends with assets you own and recommendations you can act on.</p>
+  </div>
+  <div class="methodology-grid">
+    <div class="method-card">
+      <span class="method-number">01</span>
+      <h3 class="method-title">Scope</h3>
+      <p class="method-desc">Define the question. Audit the data. Agree on what success looks like before we start building.</p>
+      <div class="method-tags">
+        <span class="method-tag">Discovery</span>
+        <span class="method-tag">Data Audit</span>
+        <span class="method-tag">Requirements</span>
+      </div>
+    </div>
+    <div class="method-card">
+      <span class="method-number">02</span>
+      <h3 class="method-title">Build</h3>
+      <p class="method-desc">Models, pipelines, dashboards—whatever the project needs. Iterative delivery with weekly visibility.</p>
+      <div class="method-tags">
+        <span class="method-tag">Analysis</span>
+        <span class="method-tag">Modeling</span>
+        <span class="method-tag">Iteration</span>
+      </div>
+    </div>
+    <div class="method-card">
+      <span class="method-number">03</span>
+      <h3 class="method-title">Validate & Deliver</h3>
+      <p class="method-desc">Sanity checks, documentation, handoff. You get the code, the logic, and the confidence to act on it.</p>
+      <div class="method-tags">
+        <span class="method-tag">QA</span>
+        <span class="method-tag">Documentation</span>
+        <span class="method-tag">Handoff</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tech Stack -->
+<section class="stack" id="stack">
+  <div class="stack-header">
+    <p class="section-label">Technical</p>
+    <span class="section-number">02</span>
+  </div>
+  <div class="stack-content">
+    <p class="stack-intro">Modern data stack. Open source where possible. We work with what you have or help you build what you need.</p>
+  </div>
+  <div class="stack-grid">
+    <div class="stack-category">
+      <p class="stack-category-title">Analysis</p>
+      <p class="stack-items">Python<br>SQL<br>R<br>dbt</p>
+    </div>
+    <div class="stack-category">
+      <p class="stack-category-title">Modeling</p>
+      <p class="stack-items">Scikit-learn<br>PyMC<br>Prophet<br>XGBoost</p>
+    </div>
+    <div class="stack-category">
+      <p class="stack-category-title">Visualization</p>
+      <p class="stack-items">Looker<br>Tableau<br>Streamlit<br>Hex</p>
+    </div>
+    <div class="stack-category">
+      <p class="stack-category-title">Data</p>
+      <p class="stack-items">BigQuery<br>Snowflake<br>Redshift<br>Postgres</p>
+    </div>
+    <div class="stack-category">
+      <p class="stack-category-title">Orchestration</p>
+      <p class="stack-items">Airflow<br>Prefect<br>Dagster<br>Fivetran</p>
+    </div>
+    <div class="stack-category">
+      <p class="stack-category-title">Infrastructure</p>
+      <p class="stack-items">GCP<br>AWS<br>Docker<br>Git</p>
+    </div>
+  </div>
+</section>
+
+<!-- Metrics (replaces Testimonial) -->
+<section class="metrics" id="metrics">
+  <div class="metrics-content">
+    <div class="metric-item">
+      <span class="metric-value">Senior</span>
+      <span class="metric-label">Practitioners Only</span>
+    </div>
+    <div class="metric-item">
+      <span class="metric-value">Weeks</span>
+      <span class="metric-label">Not Months</span>
+    </div>
+    <div class="metric-item">
+      <span class="metric-value">Yours</span>
+      <span class="metric-label">All Deliverables</span>
+    </div>
+    <div class="metric-item">
+      <span class="metric-value">Zero</span>
+      <span class="metric-label">Fluff</span>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="contact-left">
+    <p class="contact-label">Get in Touch</p>
+    <h2 class="contact-title">Ready to put your data to work?</h2>
+    <a href="/cdn-cgi/l/email-protection#620a070e0e0d220f031a0f0b0c4c0b0d" class="contact-email"><span class="__cf_email__" data-cfemail="8de5e8e1e1e2cde0ecf5e0e4e3a3e4e2">[email&#160;protected]</span></a>
+  </div>
+  <div class="contact-right">
+    <div class="contact-block">
+      <p class="contact-block-title">Engagement</p>
+      <p class="contact-block-content">Most projects: 4-8 weeks. Ongoing support available. All code and assets delivered to you.</p>
+    </div>
+    <div class="contact-block">
+      <p class="contact-block-title">Fit</p>
+      <p class="contact-block-content">We work with companies that have data and want to use it. If you're guessing when you could be knowing, let's talk.</p>
+    </div>
+    <div class="contact-block">
+      <p class="contact-block-title">Location</p>
+      <p class="contact-block-content">Remote-first. Async communication, weekly syncs.</p>
+    </div>
+    <div class="contact-block">
+      <p class="contact-block-title">Connect</p>
+      <p class="contact-block-content"><a href="#">LinkedIn</a><br><a href="#">GitHub</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">© 2025 MaxMin. All rights reserved.</div>
+  <div class="footer-right">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scrip
