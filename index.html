@@ -74,11 +74,28 @@
       padding: 1rem 0;
       display: flex;
       align-items: center;
+      gap: 0.5rem;
     }
 
     .nav-logo svg {
-      height: 50px;
+      height: 36px;
       width: auto;
+    }
+
+    .logo-max {
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: 0.05em;
+    }
+
+    .logo-min {
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--red);
+      letter-spacing: 0.05em;
     }
 
     .nav-links {
@@ -1353,10 +1370,12 @@
 <!-- Navigation -->
 <nav>
   <div class="nav-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="55" height="50">
+    <span class="logo-max">MAX</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="40" height="36">
       <path d="M8,72 L40,12 L72,72 Z" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linejoin="miter"/>
       <path d="M28,18 L92,18 L60,78 Z" fill="none" stroke="#C54B4B" stroke-width="4.5" stroke-linejoin="miter"/>
     </svg>
+    <span class="logo-min">MIN</span>
   </div>
   <div class="nav-links">
     <a href="#about" data-hover>About</a>
@@ -1599,7 +1618,7 @@
   <div class="contact-left">
     <p class="contact-label">Get in Touch</p>
     <h2 class="contact-title">Ready to put your data to work?</h2>
-    <a href="/cdn-cgi/l/email-protection#620a070e0e0d220f031a0f0b0c4c0b0d" class="contact-email"><span class="__cf_email__" data-cfemail="8de5e8e1e1e2cde0ecf5e0e4e3a3e4e2">[email&#160;protected]</span></a>
+    <a href="mailto:heya@maxmin.agency" class="contact-email">heya@maxmin.agency</a>
   </div>
   <div class="contact-right">
     <div class="contact-block">
@@ -1616,7 +1635,7 @@
     </div>
     <div class="contact-block">
       <p class="contact-block-title">Connect</p>
-      <p class="contact-block-content"><a href="#">LinkedIn</a><br><a href="#">GitHub</a></p>
+      <p class="contact-block-content"><a href="https://www.linkedin.com/company/maxmin01">LinkedIn</a></p>
     </div>
   </div>
 </section>
@@ -1630,4 +1649,4 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scrip
+<script data-cfasync="f
