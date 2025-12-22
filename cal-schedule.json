@@ -1,0 +1,34 @@
+{
+  "monday": {
+    "morning": "09:00-12:00",
+    "blockedAfternoon": [
+      "12:30",
+      "15:00",
+      "16:30"
+    ],
+    "note": "Available except for blocked slots"
+  },
+  "tuesday": {
+    "available": "09:00-17:00"
+  },
+  "wednesday": {
+    "blocked": [
+      "09:30",
+      "11:00",
+      "12:30",
+      "13:30",
+      "15:00"
+    ],
+    "note": "Available except for blocked slots"
+  },
+  "thursday": {
+    "onlyAvailable": [
+      "09:00",
+      "12:30"
+    ],
+    "note": "ONLY these 2 slots"
+  },
+  "friday": {
+    "available": "09:00-17:00"
+  }
+}

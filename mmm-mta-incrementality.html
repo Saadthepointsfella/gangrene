@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MMM vs. MTA vs. Incrementality Testing | MaxMin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cream: #f5f2ed;
+      --cream-dark: #eae6df;
+      --black: #1a1a1a;
+      --gray: #6b6b6b;
+      --gray-light: #9a9a9a;
+      --red: #c45c4a;
+      --grid-color: rgba(0,0,0,0.055);
+      --grid-color-soft: rgba(0,0,0,0.04);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Inter", -apple-system, system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--black);
+      line-height: 1.75;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color-soft) 1px, transparent 1px);
+      background-size: calc(100% / 12) 100%, 100% 96px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--grid-color);
+      width: 100%;
+    }
+
+    /* Typography */
+    .serif { font-family: "Cormorant Garamond", Georgia, serif; }
+    .kicker {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+    }
+
+    .section-title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 32px;
+    }
+
+    .muted { color: var(--gray); }
+
+    /* Layout blocks */
+    .hero {
+      padding: 120px 0 88px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 96px 1fr 260px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .meta-stack { padding-top: 6px; }
+    .meta-number {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--red);
+      margin-top: 10px;
+    }
+
+    .hero h1 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.9rem;
+      font-weight: 400;
+      line-height: 1.15;
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      max-width: 640px;
+      color: var(--gray);
+      font-size: 15px;
+    }
+
+    .sidebar {
+      padding-top: 6px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .sidebar-block {
+      padding-top: 2px;
+      border-top: 1px solid var(--grid-color);
+      padding-top: 14px;
+    }
+
+    .sidebar-block:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .sidebar-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--black);
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-meta { padding-top: 6px; }
+
+    .section-meta .meta-number {
+      margin-top: 8px;
+    }
+
+    .prose {
+      max-width: 760px;
+    }
+
+    .prose p {
+      margin-bottom: 14px;
+      color: var(--gray);
+    }
+
+    .prose p:last-child { margin-bottom: 0; }
+
+    .prose strong { color: var(--black); font-weight: 500; }
+
+    /* Methods */
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--grid-color);
+      margin-top: 40px;
+    }
+
+    .method-card {
+      background: var(--cream);
+      padding: 44px 30px;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .method-card.featured {
+      background: var(--black);
+      color: var(--cream);
+    }
+
+    .method-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .method-id {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--red);
+    }
+
+    .method-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+    }
+
+    .method-card.featured .method-subtitle {
+      color: rgba(245,242,237,0.55);
+    }
+
+    .method-card h3 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .method-desc {
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: var(--gray);
+      flex: 1;
+    }
+
+    .method-card.featured .method-desc {
+      color: rgba(245,242,237,0.82);
+    }
+
+    .method-desc strong {
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    .method-card.featured .method-desc strong {
+      color: var(--cream);
+    }
+
+    .method-tags {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--grid-color);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .method-card.featured .method-tags {
+      border-top-color: rgba(245,242,237,0.14);
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      background: var(--cream-dark);
+      color: var(--gray);
+    }
+
+    .method-card.featured .tag {
+      background: rgba(245,242,237,0.10);
+      color: rgba(245,242,237,0.70);
+    }
+
+    /* Table */
+    .table-wrap { margin-top: 40px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      background: transparent;
+    }
+
+    th, td {
+      padding: 18px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--grid-color);
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+      background: var(--cream-dark);
+    }
+
+    th:first-child { width: 190px; }
+
+    td:first-child {
+      font-weight: 500;
+      color: var(--black);
+      font-size: 12.5px;
+    }
+
+    td { color: var(--gray); }
+
+    .cell-highlight {
+      background: var(--black);
+      color: var(--cream);
+    }
+
+    .rating {
+      display: flex;
+      gap: 4px;
+      padding-top: 2px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      border: 1px solid var(--grid-color);
+    }
+
+    .dot.filled {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    .cell-highlight .dot {
+      background: rgba(245,242,237,0.18);
+      border-color: rgba(245,242,237,0.26);
+    }
+
+    .cell-highlight .dot.filled {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* Decisions */
+    .decisions {
+      margin-top: 40px;
+      background: var(--cream-dark);
+      border: 1px solid var(--grid-color);
+      padding: 36px;
+    }
+
+    .decisions h4 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .decisions p {
+      color: var(--gray);
+      font-size: 13.5px;
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+
+    .decision-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 14px 0;
+      border-top: 1px solid var(--grid-color);
+    }
+
+    .decision-row:first-of-type { border-top: 0; }
+
+    .decision-q {
+      font-size: 13.5px;
+      color: var(--black);
+      font-style: italic;
+    }
+
+    .decision-a {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      font-size: 10.5px;
+      letter-spacing: 0.10em;
+      padding: 8px 12px;
+      background: var(--black);
+      color: var(--cream);
+      font-weight: 500;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .pill.outline {
+      background: transparent;
+      color: var(--black);
+      border: 1px solid var(--black);
+    }
+
+    /* Callout */
+    .callout {
+      margin-top: 24px;
+      background: var(--black);
+      color: var(--cream);
+      padding: 44px;
+      border: 1px solid rgba(245,242,237,0.12);
+    }
+
+    .callout h4 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+
+    .callout p {
+      color: rgba(245,242,237,0.82);
+      max-width: 720px;
+      font-size: 13.5px;
+      line-height: 1.85;
+    }
+
+    .callout strong { color: var(--cream); font-weight: 500; }
+
+    /* Our take */
+    .take-grid {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .mini-card {
+      border-top: 1px solid var(--grid-color);
+      padding-top: 14px;
+    }
+
+    .mini-card:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .mini-kicker {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .mini-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--black);
+    }
+
+    /* CTA */
+    .cta {
+      padding: 92px 0;
+      text-align: center;
+    }
+
+    .cta h3 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.35rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .cta p {
+      color: var(--gray);
+      max-width: 720px;
+      margin: 0 auto 30px;
+      font-size: 13.5px;
+      line-height: 1.85;
+    }
+
+    .cta a {
+      display: inline-block;
+      background: var(--black);
+      color: var(--cream);
+      padding: 16px 38px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .cta a:hover { opacity: 0.86; }
+
+    /* Responsive */
+    @media (max-width: 1020px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 28px; }
+      .sidebar { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .section-grid { grid-template-columns: 1fr; gap: 22px; }
+      .methods-grid { grid-template-columns: 1fr; }
+      .take-grid { grid-template-columns: 1fr; gap: 32px; }
+      .decision-a { justify-content: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 22px; }
+      .hero { padding: 84px 0 60px; }
+      .section { padding: 64px 0; }
+      .sidebar { grid-template-columns: 1fr; }
+      .decisions { padding: 26px 20px; }
+      .callout { padding: 34px 20px; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 820px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-bg"></div>
+
+  <article>
+    <header class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="meta-stack">
+            <div class="kicker">Methodology</div>
+            <div class="meta-number">01</div>
+          </div>
+
+          <div>
+            <h1>Three measurement methods. Different jobs. Pick the right one.</h1>
+            <p>
+              MMM, Multi Touch Attribution, and Incrementality Testing answer different questions at different altitudes.
+              Most teams pick based on what their platform reports. That is not a method. Start with the decision.
+            </p>
+          </div>
+
+          <aside class="sidebar">
+            <div class="sidebar-block">
+              <div class="sidebar-label">Primary Question</div>
+              <div class="sidebar-text">What actually caused revenue, and what do we do next.</div>
+            </div>
+            <div class="sidebar-block">
+              <div class="sidebar-label">Common Failure</div>
+              <div class="sidebar-text">Dashboards multiply. Clarity does not.</div>
+            </div>
+            <div class="sidebar-block">
+              <div class="sidebar-label">Working Rule</div>
+              <div class="sidebar-text">Match the method to the decision altitude.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- The Problem -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Context</div>
+            <div class="meta-number">02</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">The Problem</h2>
+            <div class="prose">
+              <p>Marketing measurement breaks when teams treat tools as interchangeable. Platforms report what they can track. Finance asks what moved the business. Analytics tries to reconcile the gap.</p>
+              <p><strong>MMM, MTA, and incrementality are not competing.</strong> They solve different problems. Strategy, optimization, validation. If you use a tactical tool for a strategic decision, you do not just get noise. You get a biased answer that looks clean.</p>
+              <p><strong>The common trap is attribution.</strong> It feels accurate because it is user level. But precision is not accuracy. If the system cannot observe the full journey, it will over credit what it sees and under credit what it misses.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Methods -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Methods</div>
+            <div class="meta-number">03</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">The Methods</h2>
+
+            <div class="methods-grid">
+              <div class="method-card featured">
+                <div class="method-top">
+                  <div class="method-id">01</div>
+                  <div class="method-subtitle">Aggregate • Strategic</div>
+                </div>
+
+                <h3>Media Mix Modeling</h3>
+                <p class="method-desc">
+                  Uses historical spend and outcomes to estimate contribution by channel while controlling for seasonality, pricing, promotions, and external demand.
+                  Built for allocation decisions: what to cut, what to scale, and where diminishing returns start.
+                  <strong>Privacy resilient by design.</strong>
+                </p>
+
+                <div class="method-tags">
+                  <span class="tag">Budget Allocation</span>
+                  <span class="tag">Diminishing Returns</span>
+                  <span class="tag">Scenarios</span>
+                </div>
+              </div>
+
+              <div class="method-card">
+                <div class="method-top">
+                  <div class="method-id">02</div>
+                  <div class="method-subtitle">User Level • Tactical</div>
+                </div>
+
+                <h3>Multi Touch Attribution</h3>
+                <p class="method-desc">
+                  Assigns conversion credit across trackable touchpoints.
+                  Useful for iteration inside digital when tracking is stable.
+                  <strong>It assigns credit. It does not prove incrementality.</strong>
+                </p>
+
+                <div class="method-tags">
+                  <span class="tag">Creative Iteration</span>
+                  <span class="tag">In Flight Changes</span>
+                  <span class="tag">Digital Only</span>
+                </div>
+              </div>
+
+              <div class="method-card">
+                <div class="method-top">
+                  <div class="method-id">03</div>
+                  <div class="method-subtitle">Experimental • Validation</div>
+                </div>
+
+                <h3>Incrementality Testing</h3>
+                <p class="method-desc">
+                  Uses holdouts or geo splits to isolate causal lift.
+                  Highest rigor when executed well.
+                  Narrow by design, and best used to validate a specific claim before a major move.
+                </p>
+
+                <div class="method-tags">
+                  <span class="tag">Causal Proof</span>
+                  <span class="tag">High Stakes Bets</span>
+                  <span class="tag">Calibration</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Head to head -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Comparison</div>
+            <div class="meta-number">04</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Head To Head</h2>
+
+            <div class="prose">
+              <p>Use this as a filter. If you cannot answer the primary question in one sentence, you are about to pick the wrong tool.</p>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>MMM</th>
+                    <th>MTA</th>
+                    <th>Incrementality</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Primary question</td>
+                    <td>How should we allocate budget?</td>
+                    <td>Which touches get credit?</td>
+                    <td>Did this cause lift?</td>
+                  </tr>
+                  <tr>
+                    <td>Data required</td>
+                    <td>Spend and outcomes for 18 to 24 months, consistent naming, major promos flagged.</td>
+                    <td>User level tracking, identity stitching, stable conversion definitions.</td>
+                    <td>A clean holdout design and time to read the result.</td>
+                  </tr>
+                  <tr>
+                    <td>Coverage</td>
+                    <td class="cell-highlight">All channels, including halo effects.</td>
+                    <td>Digital only, observable portion.</td>
+                    <td>One lever at a time.</td>
+                  </tr>
+                  <tr>
+                    <td>Time horizon</td>
+                    <td>Quarterly planning.</td>
+                    <td>Weekly optimization.</td>
+                    <td>Per test, often 4 to 8 weeks.</td>
+                  </tr>
+                  <tr>
+                    <td>Causal rigor</td>
+                    <td>
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot"></span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                      </div>
+                    </td>
+                    <td class="cell-highlight">
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Privacy resilience</td>
+                    <td class="cell-highlight">
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="rating">
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot filled"></span>
+                        <span class="dot"></span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Best for</td>
+                    <td>Allocation, diminishing returns, scenarios.</td>
+                    <td>Iteration inside digital.</td>
+                    <td>Validating big claims and settling disputes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- When to use what -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Framework</div>
+            <div class="meta-number">05</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">When To Use What</h2>
+
+            <div class="decisions">
+              <h4>Match the method to the decision.</h4>
+              <p>If the decision changes budget, use a method that can defend a budget decision. If the decision changes creative, move faster. If the decision is high stakes, validate.</p>
+
+              <div class="decision-row">
+                <div class="decision-q">How should we split next quarter's budget?</div>
+                <div class="decision-a"><span class="pill">MMM</span></div>
+              </div>
+
+              <div class="decision-row">
+                <div class="decision-q">Which creative is converting better this week?</div>
+                <div class="decision-a"><span class="pill">MTA</span></div>
+              </div>
+
+              <div class="decision-row">
+                <div class="decision-q">Is this channel driving incremental sales?</div>
+                <div class="decision-a"><span class="pill">Incrementality</span></div>
+              </div>
+
+              <div class="decision-row">
+                <div class="decision-q">Should we cut a channel entirely?</div>
+                <div class="decision-a">
+                  <span class="pill">MMM</span>
+                  <span class="pill outline">Incrementality</span>
+                </div>
+              </div>
+
+              <div class="decision-row">
+                <div class="decision-q">Should we scale spend aggressively?</div>
+                <div class="decision-a">
+                  <span class="pill">Incrementality</span>
+                  <span class="pill outline">MMM</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout">
+              <h4>Triangulate. Do not average.</h4>
+              <p>
+                MMM sets the allocation view. MTA helps you move faster inside digital. Incrementality validates the bets that matter.
+                When they disagree, do not split the difference. Treat the gap as information, then test.
+                <strong>Decisions, not reports.</strong>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Our take -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Perspective</div>
+            <div class="meta-number">06</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Our Take</h2>
+
+            <div class="take-grid">
+              <div class="prose">
+                <p><strong>Start with MMM if you need a default system.</strong> It is the only method built to see all channels and account for diminishing returns. It is also the most robust under privacy changes.</p>
+                <p><strong>Use MTA for speed, not truth.</strong> It can help you iterate inside a platform. It should not be your budget authority.</p>
+                <p><strong>Validate before big moves.</strong> If you are about to cut a channel, double spend, or settle a dispute, run an incrementality test. Weeks, not months.</p>
+                <p><strong>Build a loop.</strong> Scope. Build. Validate. Deliver. Sanity checks and documentation. Assets you own.</p>
+              </div>
+
+              <aside>
+                <div class="mini-card">
+                  <div class="mini-kicker">What We Ship</div>
+                  <div class="mini-text">Models, pipelines, and documentation the client owns.</div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="mini-kicker">How We Work</div>
+                  <div class="mini-text">Audit the data first. Define the decision. Then build only what earns its place.</div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="mini-kicker">What To Expect</div>
+                  <div class="mini-text">Clear tradeoffs, confidence intervals, and a test plan when uncertainty is too expensive.</div>
+                </div>
+              </aside>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <footer class="cta">
+      <div class="container">
+        <h3>Not sure where to start?</h3>
+        <p>Send what you have. We will audit the data, scope what is realistic, and tell you what to do first.</p>
+        <a href="mailto:heya@maxmin.agency">Get in touch</a>
+      </div>
+    </footer>
+
+  </article>
+</body>
+</html>
