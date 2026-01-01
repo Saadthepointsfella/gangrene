@@ -64,13 +64,15 @@
       z-index: 100;
       background: var(--cream);
       border-bottom: 1px solid var(--grid-color);
+      padding: 0 3rem;
     }
 
     .site-header .container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 64px;
+      padding: 1rem 0;
+      max-width: none;
     }
 
     .logo {
@@ -84,23 +86,11 @@
       gap: 0.5rem;
     }
 
-    .logo-max {
-      color: var(--black);
-    }
+    .logo-max { color: var(--black); }
+    .logo-min { color: var(--red); }
 
-    .logo-min {
-      color: var(--red);
-    }
-
-    .logo-symbol {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-symbol svg {
-      height: 28px;
-      width: auto;
-    }
+    .logo-symbol { display: flex; align-items: center; }
+    .logo-symbol svg { height: 36px; width: auto; }
 
     .header-cta {
       font-family: 'Space Mono', monospace;
@@ -116,10 +106,7 @@
       background: var(--black);
     }
 
-    .header-cta span {
-      position: relative;
-      z-index: 1;
-    }
+    .header-cta span { position: relative; z-index: 1; }
 
     .kicker {
       font-size: 10px;
@@ -145,23 +132,7 @@
       margin-bottom: 32px;
     }
 
-    /* Code styling for endpoint hints */
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-      background: var(--cream-dark);
-      padding: 2px 6px;
-      border: 1px solid var(--grid-color);
-      color: var(--black);
-      white-space: nowrap;
-    }
-    .on-dark code {
-      background: rgba(245,242,237,0.10);
-      border-color: rgba(245,242,237,0.14);
-      color: rgba(245,242,237,0.90);
-    }
-
-    .hero { padding: 140px 0 88px; }
+    .hero { padding: 120px 0 88px; }
 
     .hero-inner {
       display: grid;
@@ -518,11 +489,13 @@
       .methods-grid { grid-template-columns: 1fr; }
       .take-grid { grid-template-columns: 1fr; gap: 32px; }
       .decision-a { justify-content: flex-start; }
+      .site-header { padding: 0 1.5rem; }
+      .hero { padding: 100px 0 64px; }
     }
 
     @media (max-width: 640px) {
       .container { padding: 0 22px; }
-      .hero { padding: 104px 0 60px; }
+      .hero { padding: 84px 0 60px; }
       .section { padding: 64px 0; }
       .sidebar { grid-template-columns: 1fr; }
       .panel, .decisions { padding: 26px 20px; }
