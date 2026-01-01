@@ -16,7 +16,7 @@
       --black: #1a1a1a;
       --gray: #6b6b6b;
       --gray-light: #9a9a9a;
-      --red: #c45c4a;
+      --red: #C54B4B;
       --grid-color: rgba(0,0,0,0.055);
       --grid-color-soft: rgba(0,0,0,0.04);
     }
@@ -250,6 +250,16 @@
       color: rgba(245,242,237,0.5);
     }
 
+    .level-score {
+      font-size: 10px;
+      color: var(--gray-light);
+      margin-top: 4px;
+    }
+
+    .level-card.current .level-score {
+      color: rgba(245,242,237,0.4);
+    }
+
     /* Domain Matrix */
     .matrix-wrap {
       margin-top: 40px;
@@ -302,45 +312,6 @@
       border-color: rgba(245,242,237,0.14);
       color: rgba(245,242,237,0.92);
     }
-
-    /* Endpoint Table */
-    .endpoint-wrap {
-      margin-top: 40px;
-      overflow-x: auto;
-    }
-
-    .endpoint-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      min-width: 940px;
-    }
-
-    .endpoint-table th,
-    .endpoint-table td {
-      padding: 16px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--grid-color);
-      vertical-align: top;
-    }
-
-    .endpoint-table th {
-      font-weight: 500;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray-light);
-      background: var(--cream-dark);
-    }
-
-    .endpoint-table td:first-child {
-      font-weight: 500;
-      color: var(--black);
-      font-size: 12px;
-      width: 160px;
-    }
-
-    .endpoint-table td { color: var(--gray); line-height: 1.6; }
 
     /* Methodology Cards */
     .methodology-grid {
@@ -404,6 +375,43 @@
       opacity: 0.9;
     }
 
+    /* Domain Cards */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--grid-color);
+      margin-top: 40px;
+    }
+
+    .domain-card {
+      background: var(--cream);
+      padding: 28px 24px;
+      min-height: 220px;
+    }
+
+    .domain-number {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .domain-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .domain-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
     /* Assessment */
     .assessment-grid {
       display: grid;
@@ -464,7 +472,7 @@
     /* Build Order */
     .build-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 1px;
       background: var(--grid-color);
       margin-top: 40px;
@@ -619,11 +627,79 @@
 
     .cta a:hover { opacity: 0.86; }
 
+    /* Site Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid var(--grid-color);
+    }
+
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .logo {
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-max {
+      color: var(--black);
+    }
+
+    .logo-min {
+      color: var(--red);
+    }
+
+    .logo-symbol {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-symbol svg {
+      height: 28px;
+      width: auto;
+    }
+
+    .header-cta {
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--black);
+      background: var(--black);
+      transition: opacity 0.2s;
+    }
+
+    .header-cta:hover {
+      opacity: 0.86;
+    }
+
+    /* Adjust hero for fixed header */
+    .hero { padding: 140px 0 88px; }
+
     @media (max-width: 1020px) {
       .hero-inner { grid-template-columns: 1fr; gap: 28px; }
       .sidebar { grid-template-columns: repeat(3, 1fr); gap: 18px; }
       .section-grid { grid-template-columns: 1fr; gap: 22px; }
       .levels-grid { grid-template-columns: repeat(2, 1fr); }
+      .domain-grid { grid-template-columns: repeat(2, 1fr); }
       .assessment-grid { grid-template-columns: 1fr; }
       .assessment-card.full { grid-column: span 1; }
       .build-grid { grid-template-columns: repeat(2, 1fr); }
@@ -633,14 +709,14 @@
 
     @media (max-width: 640px) {
       .container { padding: 0 22px; }
-      .hero { padding: 84px 0 60px; }
+      .hero { padding: 104px 0 60px; }
       .section { padding: 64px 0; }
       .sidebar { grid-template-columns: 1fr; }
       .levels-grid { grid-template-columns: 1fr; }
+      .domain-grid { grid-template-columns: 1fr; }
       .build-grid { grid-template-columns: 1fr; }
       .callout { padding: 34px 20px; }
-      .matrix-wrap,
-      .endpoint-wrap { margin-left: -22px; margin-right: -22px; padding: 0 22px; }
+      .matrix-wrap { margin-left: -22px; margin-right: -22px; padding: 0 22px; }
       .matrix { min-width: 980px; }
     }
   </style>
@@ -648,6 +724,23 @@
 
 <body>
   <div class="grid-bg"></div>
+
+  <!-- Site Header -->
+  <nav class="site-header">
+    <div class="container">
+      <a href="https://www.maxmin.agency" class="logo">
+        <span class="logo-max">MAX</span>
+        <span class="logo-symbol">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="32" height="28">
+            <path d="M8,72 L40,12 L72,72 Z" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linejoin="miter"/>
+            <path d="M28,18 L92,18 L60,78 Z" fill="none" stroke="#C54B4B" stroke-width="4.5" stroke-linejoin="miter"/>
+          </svg>
+        </span>
+        <span class="logo-min">MIN</span>
+      </a>
+      <a href="mailto:heya@maxmin.agency" class="header-cta">Get in Touch</a>
+    </div>
+  </nav>
 
   <article>
     <header class="hero">
@@ -663,22 +756,22 @@
             <p>
               Most DTC brands are drowning in dashboards and starving for decisions.
               This framework maps where you are, what is missing, and what to build next.
-              Five levels. Six domains. One goal. Analytics that compounds.
+              Five levels. Six dimensions. One goal: analytics that compounds.
             </p>
           </div>
 
           <aside class="sidebar">
             <div class="sidebar-block">
               <div class="sidebar-label">Typical Starting Point</div>
-              <div class="sidebar-text">Platform dashboards, blended CAC, LTV calculated wrong, forecasts based on hope.</div>
+              <div class="sidebar-text">Platform dashboards, blended CAC, attribution that credits whatever touched last, experiments that run once a quarter.</div>
             </div>
             <div class="sidebar-block">
               <div class="sidebar-label">Actual Goal</div>
-              <div class="sidebar-text">Know unit economics by cohort, predict behavior, allocate with confidence, forecast with uncertainty.</div>
+              <div class="sidebar-text">Unified data, validated measurement, real-time decisions, and learning that compounds across the organization.</div>
             </div>
             <div class="sidebar-block">
               <div class="sidebar-label">Working Principle</div>
-              <div class="sidebar-text">Build the layer that unblocks the next decision. Sequence matters.</div>
+              <div class="sidebar-text">Your weakest dimension is your ceiling. Fix foundations before adding sophistication.</div>
             </div>
           </aside>
         </div>
@@ -699,16 +792,17 @@
           <div>
             <h2 class="section-title">Why This Matters</h2>
             <div class="prose">
-              <p>DTC brands generate more data than most enterprises. The problem is not access. It is structure. Shopify gives you orders. Ad platforms give you spend. Email gives you sends. None of it is naturally consistent.</p>
-              <p><strong>The symptoms are familiar.</strong> CAC to LTV ratios that look fine but do not match cash flow. Retention programs that are never measured with a holdout. Forecasts that miss every quarter. Attribution that credits whatever touched last.</p>
-              <p><strong>The root cause is definition drift.</strong> Every tool defines revenue, conversions, and customers slightly differently. A dashboard can be precise and still be wrong.</p>
-              <p><strong>Maturity is not tools.</strong> It is the set of questions you can answer with a straight face, and the audit trail behind the answer.</p>
+              <p>DTC brands generate more data than most enterprises. The problem is not access. It is structure. Shopify gives you orders. Ad platforms give you spend. Klaviyo gives you opens. None of it is naturally consistent.</p>
+              <p><strong>The symptoms are familiar.</strong> Attribution that shows 3x more conversions than actually happened. Experiments that run without statistical power. Lifecycle programs with no holdout measurement. Forecasts built on hope.</p>
+              <p><strong>The root cause is fragmentation.</strong> Every tool defines conversions differently. Every team has their own spreadsheet. There is no single source of truth, so decisions are made by whoever shouts loudest.</p>
+              <p><strong>Maturity is not about tools.</strong> It is about the questions you can answer with confidence and the decisions you can make without guessing.</p>
 
               <ul>
-                <li><strong>Reporting:</strong> What happened.</li>
-                <li><strong>Diagnosis:</strong> What changed, and where.</li>
-                <li><strong>Prediction:</strong> What is likely next, with uncertainty.</li>
-                <li><strong>Optimization:</strong> What to do next, and what it costs to be wrong.</li>
+                <li><strong>Level 1:</strong> You know something happened.</li>
+                <li><strong>Level 2:</strong> You know what happened, with definitions.</li>
+                <li><strong>Level 3:</strong> You know why it happened and can diagnose.</li>
+                <li><strong>Level 4:</strong> You can predict what will happen next.</li>
+                <li><strong>Level 5:</strong> You can optimize decisions automatically.</li>
               </ul>
             </div>
           </div>
@@ -730,63 +824,128 @@
           <div>
             <h2 class="section-title">Five Levels of Maturity</h2>
             <div class="prose">
-              <p>Each level unlocks a class of decisions you could not make before. Most brands stall because they build dashboards before they build definitions.</p>
+              <p>Each level unlocks a class of decisions you could not make before. Most brands stall at Level 2 because they add dashboards without fixing definitions. Your overall level is capped by your weakest dimension.</p>
             </div>
 
             <div class="levels-grid">
               <div class="level-card">
                 <div class="level-header">
-                  <div class="level-number">0</div>
-                  <div class="level-name">Platform Native</div>
+                  <div class="level-number">1</div>
+                  <div class="level-name">Reactive</div>
+                  <div class="level-score">Score: 1.0 – 1.9</div>
                 </div>
                 <p class="level-desc">
-                  Shopify analytics, Ads Manager, GA4. Metrics do not reconcile. CAC is blended. LTV is an all time average. Decisions follow the loudest dashboard.
+                  Flying blind. Data lives in platform silos. Metrics do not reconcile. Decisions follow whoever checked the dashboard last. No systematic measurement.
                 </p>
-                <div class="level-stat">Siloed data</div>
+                <div class="level-stat">Gut feel with charts</div>
               </div>
 
               <div class="level-card">
                 <div class="level-header">
-                  <div class="level-number">1</div>
-                  <div class="level-name">Centralized</div>
+                  <div class="level-number">2</div>
+                  <div class="level-name">Structured</div>
+                  <div class="level-score">Score: 2.0 – 2.4</div>
                 </div>
                 <p class="level-desc">
-                  Warehouse exists. Core tables for orders, customers, and spend. BI exists. Still mostly descriptive. You can answer what happened, not what caused it.
+                  Foundation exists. Basic tracking and reporting in place. Some automation. Definitions documented but not always enforced. You can answer what happened.
                 </p>
-                <div class="level-stat">Single store of truth</div>
+                <div class="level-stat">Single source emerging</div>
               </div>
 
               <div class="level-card current">
                 <div class="level-header">
-                  <div class="level-number">2</div>
-                  <div class="level-name">Diagnostic</div>
-                </div>
-                <p class="level-desc">
-                  Cohorts work. CAC and LTV are comparable because they share definitions. Retention curves update. You can explain the business using tables, not anecdotes.
-                </p>
-                <div class="level-stat">Unit economics become usable</div>
-              </div>
-
-              <div class="level-card">
-                <div class="level-header">
                   <div class="level-number">3</div>
-                  <div class="level-name">Predictive</div>
+                  <div class="level-name">Systematic</div>
+                  <div class="level-score">Score: 2.5 – 3.4</div>
                 </div>
                 <p class="level-desc">
-                  Predictive LTV at or near acquisition. Churn risk scores. Forecasts with confidence intervals. You act on what is likely, not what you hope.
+                  Data-aware. Cross-channel visibility. Regular testing cadence. Lifecycle stages defined. Metrics reconcile. You can diagnose why things changed.
                 </p>
-                <div class="level-stat">Uncertainty is explicit</div>
+                <div class="level-stat">Decisions use data</div>
               </div>
 
               <div class="level-card">
                 <div class="level-header">
                   <div class="level-number">4</div>
-                  <div class="level-name">Prescriptive</div>
+                  <div class="level-name">Integrated</div>
+                  <div class="level-score">Score: 3.5 – 4.4</div>
                 </div>
                 <p class="level-desc">
-                  Budget allocation with response curves. Tests to validate claims. Scenario planning tied to constraints. Decisions have guardrails and an audit trail.
+                  Truly data-driven. Predictive models for CLV and churn. Validated attribution. High-velocity experimentation. Real-time dashboards. You act on what is likely.
+                </p>
+                <div class="level-stat">Prediction over reaction</div>
+              </div>
+
+              <div class="level-card">
+                <div class="level-header">
+                  <div class="level-number">5</div>
+                  <div class="level-name">Compounding</div>
+                  <div class="level-score">Score: 4.5 – 5.0</div>
+                </div>
+                <p class="level-desc">
+                  Elite. AI-driven personalization. Automated optimization. Real-time decisioning. Every test feeds the next. Learning compounds across the organization.
                 </p>
                 <div class="level-stat">Decisions compound</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- The Six Dimensions -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Dimensions</div>
+            <div class="meta-number">04</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Six Dimensions of Maturity</h2>
+            <div class="prose">
+              <p>Each dimension progresses independently, but they are load-bearing. You cannot have credible attribution without reliable tracking. You cannot have predictive CLV without lifecycle data. <strong>Your weakest dimension is your ceiling.</strong></p>
+            </div>
+
+            <div class="domain-grid">
+              <div class="domain-card">
+                <div class="domain-number">01</div>
+                <div class="domain-name">Tracking & Data Collection</div>
+                <div class="domain-desc">How completely you capture user actions and unify identities across tools. The foundation everything else depends on. Server-side tracking, cross-device identity, data quality monitoring.</div>
+              </div>
+
+              <div class="domain-card">
+                <div class="domain-number">02</div>
+                <div class="domain-name">Attribution & Measurement</div>
+                <div class="domain-desc">How you measure channel impact and allocate budget with confidence. Platform ROAS vs blended CAC vs incrementality. The difference between guessing and knowing.</div>
+              </div>
+
+              <div class="domain-card">
+                <div class="domain-number">03</div>
+                <div class="domain-name">Reporting & Dashboards</div>
+                <div class="domain-desc">How quickly teams can see reality and act on it. Single source of truth. Self-service analytics. Anomaly detection. The speed from question to answer.</div>
+              </div>
+
+              <div class="domain-card">
+                <div class="domain-number">04</div>
+                <div class="domain-name">Experimentation & Testing</div>
+                <div class="domain-desc">How you run tests, learn fast, and turn insights into repeatable wins. Statistical rigor. Testing velocity. Learning repository. The compound interest of knowledge.</div>
+              </div>
+
+              <div class="domain-card">
+                <div class="domain-number">05</div>
+                <div class="domain-name">Lifecycle & CRM</div>
+                <div class="domain-desc">How you grow retention with segmentation, CLV, and lifecycle programs. Beyond batch-and-blast. Predictive churn. Journey orchestration. The economics of keeping customers.</div>
+              </div>
+
+              <div class="domain-card">
+                <div class="domain-number">06</div>
+                <div class="domain-name">Data Infrastructure</div>
+                <div class="domain-desc">How data is stored, integrated, validated, and made usable across the org. Warehouse, pipelines, quality monitoring. The plumbing that enables everything else.</div>
               </div>
             </div>
 
@@ -802,69 +961,76 @@
       <div class="container">
         <div class="section-grid">
           <div class="section-meta">
-            <div class="kicker">Domains</div>
-            <div class="meta-number">04</div>
+            <div class="kicker">Matrix</div>
+            <div class="meta-number">05</div>
           </div>
 
           <div>
-            <h2 class="section-title">Maturity by Domain</h2>
+            <h2 class="section-title">Maturity by Dimension</h2>
             <div class="prose">
-              <p>Six domains. Each progresses independently, but they are load bearing. You cannot have a credible LTV model without cohorts. You cannot allocate budget without clean spend history.</p>
+              <p>What each level looks like across the six dimensions. Find your current state and see what the next level requires.</p>
             </div>
 
             <div class="matrix-wrap">
               <table class="matrix">
                 <thead>
                   <tr>
-                    <th>Domain</th>
-                    <th>Level 0 to 1</th>
-                    <th>Level 2</th>
-                    <th>Level 3</th>
-                    <th>Level 4</th>
+                    <th>Dimension</th>
+                    <th>Level 1 Reactive</th>
+                    <th>Level 2 Structured</th>
+                    <th>Level 3 Systematic</th>
+                    <th>Level 4 Integrated</th>
+                    <th>Level 5 Compounding</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Acquisition</td>
-                    <td>Platform ROAS. Blended CAC. No holdout discipline.</td>
-                    <td>CAC by channel and campaign using stable definitions.</td>
-                    <td class="highlight">CAC targets by predicted value segment. Guardrails by margin.</td>
-                    <td>Allocation with response curves. Tests validate big moves.</td>
+                    <td>Tracking</td>
+                    <td>Basic GA or none. Hard-coded tags. Pageviews only.</td>
+                    <td>GTM with core funnel events. Some documentation.</td>
+                    <td class="highlight">Server-side tracking. Engagement events. Tag governance.</td>
+                    <td>CDP with identity resolution. Cross-device tracking.</td>
+                    <td>Real-time unified profiles. Offline data integrated.</td>
                   </tr>
                   <tr>
-                    <td>Unit Economics</td>
-                    <td>Blended CAC to LTV. LTV uses all time averages.</td>
-                    <td class="highlight">LTV by cohort at 30, 60, 90, 180, 365 days. Payback by source.</td>
-                    <td>Contribution margin by segment. Fully loaded targets by mode.</td>
-                    <td>Targets tied to cash constraints and scenario planning.</td>
+                    <td>Attribution</td>
+                    <td>Platform-reported conversions. Each tool claims credit.</td>
+                    <td>GA4 last-click. Blended CAC tracked. UTM taxonomy.</td>
+                    <td>Multi-touch model. First incrementality tests run.</td>
+                    <td class="highlight">Data-driven attribution validated by experiments.</td>
+                    <td>Unified measurement. Automated budget optimization.</td>
                   </tr>
                   <tr>
-                    <td>Customer</td>
-                    <td>Total customers. Basic segments. No longitudinal view.</td>
-                    <td>Retention curves by cohort. Segment definitions based on behavior.</td>
-                    <td class="highlight">Predictive LTV and churn risk. Segment migration tracked.</td>
-                    <td>Next best action logic, validated with holdouts.</td>
+                    <td>Reporting</td>
+                    <td>Ad-hoc reports. Multiple spreadsheets. Metrics disputed.</td>
+                    <td>Weekly KPIs. One main dashboard. Manual updates.</td>
+                    <td class="highlight">Automated dashboards. Self-service for power users.</td>
+                    <td>Full self-service BI. Semantic layer. Anomaly alerts.</td>
+                    <td>Real-time monitoring. Predictive dashboards. Auto-diagnosis.</td>
                   </tr>
                   <tr>
-                    <td>Retention</td>
-                    <td>Open rates and click rates. Repeat rate as one number.</td>
-                    <td>Retention by cohort. Reactivation tracked by segment.</td>
-                    <td>Lifecycle triggers backed by expected value, with holdouts.</td>
-                    <td class="highlight">Incrementality measured retention. Marginal value per touch type.</td>
+                    <td>Experimentation</td>
+                    <td>No testing. Changes based on opinion.</td>
+                    <td>Occasional A/B tests. Basic email testing.</td>
+                    <td>Regular testing (1-3 concurrent). Results documented.</td>
+                    <td class="highlight">High velocity (5-10/month). Learning repository. Meta-analysis.</td>
+                    <td>ML personalization. Multi-armed bandits. Continuous optimization.</td>
                   </tr>
                   <tr>
-                    <td>Forecasting</td>
-                    <td>Spreadsheet extrapolation. Single number forecast.</td>
-                    <td>Bottoms up by channel. Still deterministic.</td>
-                    <td class="highlight">Probabilistic forecast with intervals. Scenario ranges.</td>
-                    <td>Integrated planning. Spend scenarios map to revenue distributions.</td>
+                    <td>Lifecycle</td>
+                    <td>Batch-and-blast. No segmentation. Repeat rate unknown.</td>
+                    <td>Welcome and cart flows. Basic new vs repeat segments.</td>
+                    <td>Lifecycle stages defined. CLV by cohort. Win-back campaigns.</td>
+                    <td>Predictive CLV and churn. RFM segmentation. Cross-channel journeys.</td>
+                    <td class="highlight">AI orchestration. 1:1 personalization. Real-time CLV.</td>
                   </tr>
                   <tr>
-                    <td>Measurement</td>
-                    <td>Last click or platform reports. Metrics do not reconcile.</td>
-                    <td>Stable windows and definitions. Dashboards can be rebuilt from raw.</td>
-                    <td>Digital attribution for optimization, not truth.</td>
-                    <td class="highlight">MMM for allocation. Tests for validation. Attribution for speed.</td>
+                    <td>Infrastructure</td>
+                    <td>Data in source tools only. Manual exports.</td>
+                    <td>Basic warehouse. Some sources connected. Manual ETL.</td>
+                    <td class="highlight">Automated pipelines. dbt transformations. Quality tests.</td>
+                    <td>Near real-time. Reverse ETL. Feature store.</td>
+                    <td>Streaming. Production ML. Self-service data platform.</td>
                   </tr>
                 </tbody>
               </table>
@@ -877,133 +1043,7 @@
 
     <div class="divider"></div>
 
-    <!-- Data Endpoints -->
-    <section class="section">
-      <div class="container">
-        <div class="section-grid">
-          <div class="section-meta">
-            <div class="kicker">Inputs</div>
-            <div class="meta-number">05</div>
-          </div>
-
-          <div>
-            <h2 class="section-title">Data Endpoints and Tables</h2>
-            <div class="prose">
-              <p>Most teams talk about analytics maturity without naming the inputs. We prefer the opposite. If you cannot point to the raw tables, you do not own the metric.</p>
-              <p><strong>Rule of thumb:</strong> start from order level truth, then build outward. Spend and sessions are secondary. Everything is definition work.</p>
-
-              <ul>
-                <li><strong>Order truth:</strong> orders, line items, discounts, refunds, tax, shipping, payment status.</li>
-                <li><strong>Customer truth:</strong> customer id stitching, first order date, acquisition assignment, lifecycle events.</li>
-                <li><strong>Spend truth:</strong> daily spend by campaign, with stable mapping to channels.</li>
-                <li><strong>Context truth:</strong> promos, price changes, stockouts, site incidents, shipping delays.</li>
-              </ul>
-            </div>
-
-            <div class="endpoint-wrap">
-              <table class="endpoint-table">
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>System</th>
-                    <th>Typical endpoint or export</th>
-                    <th>Grain</th>
-                    <th>What we sanity check</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Orders</td>
-                    <td>Shopify</td>
-                    <td><code>/admin/api/{version}/orders.json</code> or <code>GraphQL orders</code></td>
-                    <td>Order and line item</td>
-                    <td>Gross vs net revenue. Refund timing. Discount logic. Currency and timezone.</td>
-                  </tr>
-                  <tr>
-                    <td>Spend</td>
-                    <td>Meta Ads</td>
-                    <td><code>GET /act_{ad_account_id}/insights</code></td>
-                    <td>Daily by campaign and ad set</td>
-                    <td>Totals match invoices within tolerance. Timezone alignment. Deduped naming.</td>
-                  </tr>
-                  <tr>
-                    <td>Spend</td>
-                    <td>Google Ads</td>
-                    <td><code>GAQL via GoogleAdsService.SearchStream</code></td>
-                    <td>Daily by campaign</td>
-                    <td>Network split. Brand vs non brand rules. Consistent conversion definition.</td>
-                  </tr>
-                  <tr>
-                    <td>Spend</td>
-                    <td>TikTok Ads</td>
-                    <td><code>/open_api/v1.3/report/integrated/get</code></td>
-                    <td>Daily by campaign</td>
-                    <td>Attribution settings documented. Event definition consistency.</td>
-                  </tr>
-                  <tr>
-                    <td>Sessions</td>
-                    <td>GA4</td>
-                    <td><code>GA4 Data API runReport</code></td>
-                    <td>Daily by channel grouping</td>
-                    <td>Channel grouping is stable. Consent mode changes annotated.</td>
-                  </tr>
-                  <tr>
-                    <td>Email</td>
-                    <td>Klaviyo</td>
-                    <td><code>/api/campaigns</code>, <code>/api/flows</code>, exports</td>
-                    <td>Send and recipient</td>
-                    <td>Send volume, cadence, and holdout logic. Revenue attribution treated as directional.</td>
-                  </tr>
-                  <tr>
-                    <td>SMS</td>
-                    <td>Attentive or Postscript</td>
-                    <td>Exports or event webhooks</td>
-                    <td>Message and recipient</td>
-                    <td>Holdout design. Frequency. Unsub impact on future value.</td>
-                  </tr>
-                  <tr>
-                    <td>Payments</td>
-                    <td>Stripe</td>
-                    <td><code>/v1/charges</code>, <code>/v1/invoices</code></td>
-                    <td>Transaction</td>
-                    <td>Refund mapping, failed payments, subscription revenue timing.</td>
-                  </tr>
-                  <tr>
-                    <td>Subscriptions</td>
-                    <td>Recharge</td>
-                    <td>Exports or API tables</td>
-                    <td>Subscription and renewal</td>
-                    <td>Churn definition. Pause vs cancel. Cohort assignment.</td>
-                  </tr>
-                  <tr>
-                    <td>Support</td>
-                    <td>Gorgias</td>
-                    <td>Exports or API events</td>
-                    <td>Ticket</td>
-                    <td>Issue tags. Refund drivers. Operational drag on retention.</td>
-                  </tr>
-                  <tr>
-                    <td>Context</td>
-                    <td>Promo calendar</td>
-                    <td>Simple table you own</td>
-                    <td>Daily flags</td>
-                    <td>If promos are missing, marketing gets blamed for them.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="prose">
-              <p><strong>Minimum viable warehouse tables:</strong> <code>orders</code>, <code>order_items</code>, <code>customers</code>, <code>refunds</code>, <code>spend_daily</code>, <code>sessions_daily</code>, <code>promo_calendar</code>, <code>channel_mapping</code>. If you have these and they reconcile, most of Level 2 becomes possible.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- Soft Methodologies -->
+    <!-- Methodologies -->
     <section class="section">
       <div class="container">
         <div class="section-grid">
@@ -1013,95 +1053,85 @@
           </div>
 
           <div>
-            <h2 class="section-title">Soft Methodologies That Keep You Honest</h2>
+            <h2 class="section-title">Practices That Keep You Honest</h2>
             <div class="prose">
               <p>Most analytics stacks fail quietly. They look fine until the first hard decision. These are the practices that prevent that.</p>
-              <p><strong>None of this is exotic.</strong> It is disciplined definitions, reconciliation, and validation. Boring on purpose.</p>
             </div>
 
             <div class="methodology-grid">
               <div class="methodology-card">
-                <div class="methodology-title">Metric Contracts</div>
+                <div class="methodology-title">Fix Tracking First</div>
                 <div class="methodology-desc">
-                  You define revenue, orders, customers, and new vs returning once, then enforce it everywhere.
-                  This is how you stop dashboard debates from repeating every month.
+                  Everything downstream depends on tracking quality. Server-side implementation beats client-side. Identity resolution beats cookie-based.
                 </div>
                 <ul class="methodology-list">
-                  <li><strong>Revenue definition:</strong> gross or net, include tax, include shipping, refund timing.</li>
-                  <li><strong>Customer definition:</strong> identity stitching rules and fallbacks.</li>
-                  <li><strong>Attribution policy:</strong> windows documented and stable.</li>
+                  <li>Audit current tracking coverage and gaps</li>
+                  <li>Implement server-side for key conversion events</li>
+                  <li>Build data quality monitoring from day one</li>
                 </ul>
               </div>
 
               <div class="methodology-card">
-                <div class="methodology-title">Reconciliation</div>
+                <div class="methodology-title">Validate Attribution</div>
                 <div class="methodology-desc">
-                  Every key series must reconcile to a source of truth within a tolerance.
-                  If it does not, you do not model it. You fix it.
+                  Attribution is directional, not truth. The only way to know if a channel works is to turn it off and measure what happens.
                 </div>
                 <ul class="methodology-list">
-                  <li>Orders reconcile to Shopify payouts or Stripe settlements.</li>
-                  <li>Spend reconciles to invoices, not dashboards.</li>
-                  <li>Timezones and currency conversions are explicit.</li>
+                  <li>Compare platform ROAS to blended CAC weekly</li>
+                  <li>Run incrementality tests on major channels quarterly</li>
+                  <li>Use attribution for speed, experiments for truth</li>
                 </ul>
               </div>
 
               <div class="methodology-card">
-                <div class="methodology-title">Cohorts Before Models</div>
+                <div class="methodology-title">Test Everything</div>
                 <div class="methodology-desc">
-                  Most LTV mistakes are cohort mistakes.
-                  If cohorts are wrong, prediction multiplies the error.
+                  Opinions are free. Evidence costs a test. The brands that learn fastest are the brands that test the most.
                 </div>
                 <ul class="methodology-list">
-                  <li><strong>Cohort key:</strong> first order date or first paid touch, chosen explicitly.</li>
-                  <li><strong>Tracking drift:</strong> acquisition source changes over time get logged.</li>
-                  <li><strong>Outputs:</strong> LTV at fixed horizons, retention curves, payback curves.</li>
+                  <li>Maintain a testing backlog prioritized by impact</li>
+                  <li>Document learnings in a searchable repository</li>
+                  <li>Run meta-analysis to find patterns across tests</li>
                 </ul>
               </div>
 
               <div class="methodology-card">
-                <div class="methodology-title">Predictive LTV That Admits Uncertainty</div>
+                <div class="methodology-title">Measure Lifecycle Value</div>
                 <div class="methodology-desc">
-                  Predictive LTV is useful when it is calibrated.
-                  The goal is not perfect prediction. The goal is better thresholds and better tradeoffs.
+                  CAC without LTV is a vanity metric. You need both, calculated consistently, tracked over time by cohort and source.
                 </div>
                 <ul class="methodology-list">
-                  <li>Separate observed value from predicted future value.</li>
-                  <li>Use calibration checks on holdout cohorts.</li>
-                  <li>Report ranges, not point estimates, when uncertainty is high.</li>
+                  <li>LTV at fixed horizons (30, 60, 90, 180, 365 days)</li>
+                  <li>Retention curves by acquisition source</li>
+                  <li>Payback period by channel</li>
                 </ul>
               </div>
 
               <div class="methodology-card">
-                <div class="methodology-title">Forecasting With Intervals</div>
+                <div class="methodology-title">Build Single Source of Truth</div>
                 <div class="methodology-desc">
-                  A single number forecast is a story.
-                  A forecast with intervals is a decision tool.
+                  If two dashboards show different revenue numbers, neither is trusted. Invest in one source of truth that reconciles to actuals.
                 </div>
                 <ul class="methodology-list">
-                  <li>Seasonality and promo effects are explicit inputs.</li>
-                  <li>Scenarios model constraints like inventory and cash.</li>
-                  <li>Backtests are done on prior periods, not curated weeks.</li>
+                  <li>Define metrics once, enforce everywhere</li>
+                  <li>Reconcile to source of record (Shopify, Stripe)</li>
+                  <li>Document definitions in accessible data dictionary</li>
                 </ul>
               </div>
 
               <div class="methodology-card">
-                <div class="methodology-title">Allocation With Validation</div>
+                <div class="methodology-title">Automate the Boring Parts</div>
                 <div class="methodology-desc">
-                  Attribution is fast. MMM is wide. Tests are causal.
-                  Mature teams use all three and resolve disagreement with a test.
+                  Analysts should find insights, not assemble spreadsheets. Automate data pipelines so humans can do human work.
                 </div>
                 <ul class="methodology-list">
-                  <li>Model diminishing returns with response curves.</li>
-                  <li>Run holdouts for claims that move budget.</li>
-                  <li>Use the test result to calibrate planning assumptions.</li>
+                  <li>Automated ETL with failure alerting</li>
+                  <li>Scheduled reports that update themselves</li>
+                  <li>Anomaly detection that surfaces issues proactively</li>
                 </ul>
               </div>
             </div>
 
-            <div class="prose">
-              <p><strong>Plain rule:</strong> if a decision is expensive, you buy certainty with a test. If a decision is frequent, you buy speed with directional indicators. If a decision is strategic, you buy coverage with an allocation model.</p>
-            </div>
           </div>
         </div>
       </div>
@@ -1121,97 +1151,106 @@
           <div>
             <h2 class="section-title">Where Are You?</h2>
             <div class="prose">
-              <p>Answer these honestly. Your level is the lowest one where you answer no. That is where to focus.</p>
+              <p>Quick diagnostic. Your level is approximately the lowest one where you answer "no." That is where to focus.</p>
             </div>
 
             <div class="assessment-grid">
               <div class="assessment-card">
-                <h4 class="assessment-title">Data Foundation</h4>
+                <h4 class="assessment-title">Tracking & Attribution</h4>
+                <ul class="question-list">
+                  <li>
+                    <span>Do you track beyond pageviews and transactions?</span>
+                    <span class="level-tag">Level 2</span>
+                  </li>
+                  <li>
+                    <span>Can you track a user across devices and sessions?</span>
+                    <span class="level-tag">Level 3</span>
+                  </li>
+                  <li>
+                    <span>Do you know the gap between platform ROAS and blended CAC?</span>
+                    <span class="level-tag">Level 3</span>
+                  </li>
+                  <li>
+                    <span>Have you run an incrementality test in the last 6 months?</span>
+                    <span class="level-tag">Level 4</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="assessment-card">
+                <h4 class="assessment-title">Reporting & Experimentation</h4>
+                <ul class="question-list">
+                  <li>
+                    <span>Is there one dashboard everyone agrees is the source of truth?</span>
+                    <span class="level-tag">Level 2</span>
+                  </li>
+                  <li>
+                    <span>Can stakeholders answer questions without asking an analyst?</span>
+                    <span class="level-tag">Level 3</span>
+                  </li>
+                  <li>
+                    <span>Do you have 2+ A/B tests running at all times?</span>
+                    <span class="level-tag">Level 3</span>
+                  </li>
+                  <li>
+                    <span>Do you maintain a searchable learning repository from tests?</span>
+                    <span class="level-tag">Level 4</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="assessment-card">
+                <h4 class="assessment-title">Lifecycle & CRM</h4>
+                <ul class="question-list">
+                  <li>
+                    <span>Do you have automated welcome and abandoned cart flows?</span>
+                    <span class="level-tag">Level 2</span>
+                  </li>
+                  <li>
+                    <span>Do you know CLV by acquisition source?</span>
+                    <span class="level-tag">Level 3</span>
+                  </li>
+                  <li>
+                    <span>Can you identify at-risk customers before they churn?</span>
+                    <span class="level-tag">Level 4</span>
+                  </li>
+                  <li>
+                    <span>Does predicted CLV influence your acquisition bids?</span>
+                    <span class="level-tag">Level 5</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="assessment-card">
+                <h4 class="assessment-title">Data Infrastructure</h4>
                 <ul class="question-list">
                   <li>
                     <span>Do orders, spend, and sessions live in one warehouse?</span>
-                    <span class="level-tag">Level 1</span>
-                  </li>
-                  <li>
-                    <span>Can you rebuild key metrics from raw tables?</span>
                     <span class="level-tag">Level 2</span>
                   </li>
                   <li>
-                    <span>Do spend totals reconcile to invoices within tolerance?</span>
-                    <span class="level-tag">Level 2</span>
+                    <span>Are your data pipelines automated with failure alerts?</span>
+                    <span class="level-tag">Level 3</span>
                   </li>
                   <li>
-                    <span>Do you maintain a channel mapping table you control?</span>
-                    <span class="level-tag">Level 2</span>
+                    <span>Do you have data quality tests that run automatically?</span>
+                    <span class="level-tag">Level 4</span>
+                  </li>
+                  <li>
+                    <span>Can analysts deploy ML models without engineering help?</span>
+                    <span class="level-tag">Level 5</span>
                   </li>
                 </ul>
               </div>
+            </div>
 
-              <div class="assessment-card">
-                <h4 class="assessment-title">Unit Economics</h4>
-                <ul class="question-list">
-                  <li>
-                    <span>Is LTV calculated on cohorts, not all time averages?</span>
-                    <span class="level-tag">Level 2</span>
-                  </li>
-                  <li>
-                    <span>Do you know payback by acquisition source at a fixed horizon?</span>
-                    <span class="level-tag">Level 2</span>
-                  </li>
-                  <li>
-                    <span>Do you track contribution margin by segment, not just revenue?</span>
-                    <span class="level-tag">Level 3</span>
-                  </li>
-                  <li>
-                    <span>Do CAC targets change by margin and cash constraints?</span>
-                    <span class="level-tag">Level 4</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="assessment-card">
-                <h4 class="assessment-title">Customer Intelligence</h4>
-                <ul class="question-list">
-                  <li>
-                    <span>Do cohort retention curves update automatically?</span>
-                    <span class="level-tag">Level 2</span>
-                  </li>
-                  <li>
-                    <span>Do you have behavior based segments that stay stable over time?</span>
-                    <span class="level-tag">Level 2</span>
-                  </li>
-                  <li>
-                    <span>Do you predict value at or near acquisition?</span>
-                    <span class="level-tag">Level 3</span>
-                  </li>
-                  <li>
-                    <span>Do interventions use holdouts to measure lift?</span>
-                    <span class="level-tag">Level 4</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="assessment-card">
-                <h4 class="assessment-title">Measurement and Planning</h4>
-                <ul class="question-list">
-                  <li>
-                    <span>Do forecasts include uncertainty ranges?</span>
-                    <span class="level-tag">Level 3</span>
-                  </li>
-                  <li>
-                    <span>Have you run a holdout test in the last 12 months?</span>
-                    <span class="level-tag">Level 3</span>
-                  </li>
-                  <li>
-                    <span>Do you have response curves that show diminishing returns?</span>
-                    <span class="level-tag">Level 4</span>
-                  </li>
-                  <li>
-                    <span>Can you simulate next quarter under different spend scenarios?</span>
-                    <span class="level-tag">Level 4</span>
-                  </li>
-                </ul>
-              </div>
+            <div class="callout">
+              <h4>Want a detailed breakdown?</h4>
+              <p>
+                Take our 5-minute assessment. You will get scores across all six dimensions, 
+                identification of your primary gaps, and a prioritized roadmap with specific actions for your situation.
+                <strong><a href="https://assessment.maxmin.agency/" style="color: var(--cream); text-decoration: underline;">Take the assessment →</a></strong>
+              </p>
             </div>
 
           </div>
@@ -1233,70 +1272,83 @@
           <div>
             <h2 class="section-title">What To Build, In Order</h2>
             <div class="prose">
-              <p>Sequence matters. Predictive work built on broken cohorts is worse than no model. Allocation work built on unreconciled spend is fantasy.</p>
+              <p>Sequence matters. Each level depends on the one before it. Predictive models built on bad tracking produce confident wrong answers. Fix foundations first.</p>
             </div>
 
             <div class="build-grid">
               <div class="build-card priority">
-                <div class="build-phase">Phase 1</div>
+                <div class="build-phase">Level 1→2</div>
                 <h4 class="build-title">Foundation</h4>
                 <ul class="build-items">
-                  <li>Warehouse with raw tables and history</li>
-                  <li>ETL from Shopify, ad platforms, email, analytics</li>
-                  <li>Channel mapping table you control</li>
-                  <li>Promo calendar and operational context table</li>
-                  <li>Reconciliation checks as a scheduled job</li>
+                  <li>GTM with core funnel events</li>
+                  <li>Data warehouse with key sources</li>
+                  <li>Weekly KPI dashboard</li>
+                  <li>Basic lifecycle flows</li>
+                  <li>UTM taxonomy documented</li>
                 </ul>
                 <div class="build-time">4 to 6 weeks</div>
               </div>
 
               <div class="build-card">
-                <div class="build-phase">Phase 2</div>
-                <h4 class="build-title">Unit Economics</h4>
+                <div class="build-phase">Level 2→3</div>
+                <h4 class="build-title">Systematize</h4>
                 <ul class="build-items">
-                  <li>Cohort table with acquisition assignment rules</li>
-                  <li>LTV at fixed horizons by cohort and channel</li>
-                  <li>Payback curves by acquisition source</li>
-                  <li>Retention curves by segment</li>
-                  <li>Margin aware targets, not revenue only targets</li>
-                </ul>
-                <div class="build-time">3 to 4 weeks</div>
-              </div>
-
-              <div class="build-card">
-                <div class="build-phase">Phase 3</div>
-                <h4 class="build-title">Prediction</h4>
-                <ul class="build-items">
-                  <li>Predictive LTV with calibration checks</li>
-                  <li>Churn risk scores tied to interventions</li>
-                  <li>Forecast with intervals and scenario inputs</li>
-                  <li>Refresh and monitoring schedule</li>
-                  <li>Model documentation that survives handoff</li>
-                </ul>
-                <div class="build-time">4 to 6 weeks</div>
-              </div>
-
-              <div class="build-card">
-                <div class="build-phase">Phase 4</div>
-                <h4 class="build-title">Optimization</h4>
-                <ul class="build-items">
-                  <li>MMM for allocation with response curves</li>
-                  <li>Incrementality testing playbook and capability</li>
-                  <li>Scenario planning that ties spend to distributions</li>
-                  <li>Calibration loop that updates assumptions</li>
-                  <li>Decision memos tied to tradeoffs and constraints</li>
+                  <li>Server-side tracking</li>
+                  <li>Automated data pipelines</li>
+                  <li>Self-service dashboards</li>
+                  <li>Regular A/B testing cadence</li>
+                  <li>CLV by cohort and source</li>
                 </ul>
                 <div class="build-time">6 to 8 weeks</div>
+              </div>
+
+              <div class="build-card">
+                <div class="build-phase">Level 3→4</div>
+                <h4 class="build-title">Integrate</h4>
+                <ul class="build-items">
+                  <li>CDP with identity resolution</li>
+                  <li>Incrementality testing program</li>
+                  <li>Predictive CLV and churn</li>
+                  <li>Anomaly detection</li>
+                  <li>Learning repository</li>
+                </ul>
+                <div class="build-time">8 to 12 weeks</div>
+              </div>
+
+              <div class="build-card">
+                <div class="build-phase">Level 4→5</div>
+                <h4 class="build-title">Compound</h4>
+                <ul class="build-items">
+                  <li>Real-time data pipelines</li>
+                  <li>ML personalization</li>
+                  <li>Automated budget optimization</li>
+                  <li>AI journey orchestration</li>
+                  <li>Self-service ML platform</li>
+                </ul>
+                <div class="build-time">12 to 16 weeks</div>
+              </div>
+
+              <div class="build-card">
+                <div class="build-phase">Always</div>
+                <h4 class="build-title">Maintain</h4>
+                <ul class="build-items">
+                  <li>Data quality monitoring</li>
+                  <li>Model retraining schedule</li>
+                  <li>Documentation updates</li>
+                  <li>Team training</li>
+                  <li>Tool evaluation</li>
+                </ul>
+                <div class="build-time">Ongoing</div>
               </div>
             </div>
 
             <div class="callout">
-              <h4>The trap is skipping Phase 2.</h4>
+              <h4>The trap is skipping to Level 4.</h4>
               <p>
-                Most brands want to jump from dashboards to prediction.
-                Predictive models trained on bad cohorts do not fail loudly.
+                Most brands want to jump from dashboards to predictive models.
+                Predictive models trained on incomplete tracking or unvalidated attribution do not fail loudly.
                 They fail by producing confident targets that move budget in the wrong direction.
-                <strong>Fix cohort economics first.</strong> Everything downstream depends on it.
+                <strong>Fix your weakest dimension first.</strong> Everything downstream depends on it.
               </p>
             </div>
 
@@ -1322,25 +1374,25 @@
             <div class="take-grid">
               <div class="prose">
                 <p><strong>Most brands overestimate their level.</strong> They have dashboards, so they assume they are mature. If decisions still happen in spreadsheets or gut feel, you are still early. You just have more charts.</p>
-                <p><strong>Start where your decision pain is.</strong> If you are spending hard on acquisition, Phase 2 is usually the first compounding move. Cohorts, payback, and margin aware targets.</p>
-                <p><strong>Do not confuse attribution with truth.</strong> Attribution is useful for speed inside digital. It does not prove incrementality. When the decision is expensive, validate it.</p>
-                <p><strong>Analytics maturity is ownership.</strong> If you can rebuild the metric, you can trust it. If you cannot, you are renting it.</p>
+                <p><strong>Your weakest dimension is your ceiling.</strong> A brand with Level 4 lifecycle but Level 1 tracking is still a Level 1 brand. The weakest link breaks first.</p>
+                <p><strong>Do not confuse attribution with truth.</strong> Attribution is useful for speed inside digital. It does not prove incrementality. When the decision is expensive, validate it with a test.</p>
+                <p><strong>Analytics maturity is ownership.</strong> If you can rebuild the metric from raw data, you can trust it. If you cannot, you are renting it from a vendor who might define things differently tomorrow.</p>
               </div>
 
               <aside>
                 <div class="mini-card">
                   <div class="mini-kicker">Common Failure</div>
-                  <div class="mini-text">Multiple revenue numbers. Nobody knows which one is net of refunds. Strategy drifts because the baseline is not stable.</div>
+                  <div class="mini-text">Platform says 10x ROAS. Blended CAC shows break-even. Both are technically correct. Only one is useful for decisions.</div>
                 </div>
 
                 <div class="mini-card">
                   <div class="mini-kicker">Quick Win</div>
-                  <div class="mini-text">Build <code>cohorts</code> and <code>ltv_by_horizon</code>. Plot retention and payback by acquisition month. Most teams learn more from this than from another dashboard.</div>
+                  <div class="mini-text">Calculate blended CAC weekly: total ad spend ÷ new customers from Shopify. Compare to platform-reported CAC. The gap is your attribution problem.</div>
                 </div>
 
                 <div class="mini-card">
-                  <div class="mini-kicker">When Level 4 Pays</div>
-                  <div class="mini-text">When you have enough history and enough spend that allocation errors are expensive, and you need response curves and validation, not stories.</div>
+                  <div class="mini-kicker">When Level 5 Pays</div>
+                  <div class="mini-text">When you have enough data and enough volume that manual optimization leaves money on the table, and you need machines making decisions faster than humans can.</div>
                 </div>
               </aside>
             </div>
@@ -1356,8 +1408,8 @@
     <footer class="cta">
       <div class="container">
         <h3>Not sure where you are?</h3>
-        <p>Send your current stack and the questions you are trying to answer. We will tell you your level across the domains and what to build next. No fluff. Just scope.</p>
-        <a href="mailto:heya@maxmin.agency">Get an assessment</a>
+        <p>Tell us about your current stack and the questions you are trying to answer. We will tell you your level across all six dimensions and what to build next. No fluff. Just scope.</p>
+        <a href="mailto:heya@maxmin.agency">heya@maxmin.agency</a>
       </div>
     </footer>
 
