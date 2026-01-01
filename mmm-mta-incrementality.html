@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -16,7 +16,7 @@
       --black: #1a1a1a;
       --gray: #6b6b6b;
       --gray-light: #9a9a9a;
-      --red: #c45c4a;
+      --red: #C54B4B;
       --grid-color: rgba(0,0,0,0.055);
       --grid-color-soft: rgba(0,0,0,0.04);
     }
@@ -54,6 +54,72 @@
     }
 
     .divider { height: 1px; background: var(--grid-color); width: 100%; }
+
+    /* Site Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid var(--grid-color);
+    }
+
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .logo {
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-max {
+      color: var(--black);
+    }
+
+    .logo-min {
+      color: var(--red);
+    }
+
+    .logo-symbol {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-symbol svg {
+      height: 28px;
+      width: auto;
+    }
+
+    .header-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--black);
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .header-cta span {
+      position: relative;
+      z-index: 1;
+    }
 
     .kicker {
       font-size: 10px;
@@ -95,7 +161,7 @@
       color: rgba(245,242,237,0.90);
     }
 
-    .hero { padding: 120px 0 88px; }
+    .hero { padding: 140px 0 88px; }
 
     .hero-inner {
       display: grid;
@@ -398,8 +464,8 @@
       align-items: start;
     }
 
-    .mini-card { border-top: 1px solid var(--grid-color); padding-top: 14px; }
-    .mini-card:first-child { border-top: 0; padding-top: 0; }
+    .mini-card { border-top: 1px solid var(--grid-color); padding-top: 14px; margin-top: 14px; }
+    .mini-card:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
 
     .mini-kicker {
       font-size: 10px;
@@ -456,7 +522,7 @@
 
     @media (max-width: 640px) {
       .container { padding: 0 22px; }
-      .hero { padding: 84px 0 60px; }
+      .hero { padding: 104px 0 60px; }
       .section { padding: 64px 0; }
       .sidebar { grid-template-columns: 1fr; }
       .panel, .decisions { padding: 26px 20px; }
@@ -469,6 +535,23 @@
 
 <body>
   <div class="grid-bg"></div>
+
+  <!-- Site Header -->
+  <nav class="site-header">
+    <div class="container">
+      <a href="https://www.maxmin.agency" class="logo">
+        <span class="logo-max">MAX</span>
+        <span class="logo-symbol">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="32" height="28">
+            <path d="M8,72 L40,12 L72,72 Z" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linejoin="miter"/>
+            <path d="M28,18 L92,18 L60,78 Z" fill="none" stroke="#C54B4B" stroke-width="4.5" stroke-linejoin="miter"/>
+          </svg>
+        </span>
+        <span class="logo-min">MIN</span>
+      </a>
+      <a href="mailto:heya@maxmin.agency" class="header-cta"><span>Get in Touch</span></a>
+    </div>
+  </nav>
 
   <article>
     <header class="hero">
@@ -997,7 +1080,7 @@
       <div class="container">
         <h3>Not sure where to start?</h3>
         <p>Send what you have. We will audit the data, tell you what is missing, and propose a scope that is realistic in weeks.</p>
-        <a href="mailto:heya@maxmin.agency">Get in touch</a>
+        <a href="mailto:heya@maxmin.agency">heya@maxmin.agency</a>
       </div>
     </footer>
 

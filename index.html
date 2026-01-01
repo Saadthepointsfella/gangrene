@@ -32,6 +32,62 @@
       cursor: default;
     }
 
+    /* Assessment Banner */
+    .assessment-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      background: var(--black);
+      padding: 0.5rem 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .banner-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .banner-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+
+    .banner-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .banner-link {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.2s;
+    }
+
+    .banner-link:hover {
+      background: var(--cream);
+      color: var(--black);
+      border-color: var(--cream);
+    }
+
     /* Grid lines overlay */
     .grid-overlay {
       position: fixed;
@@ -58,7 +114,7 @@
     /* Navigation */
     nav {
       position: fixed;
-      top: 0;
+      top: 32px;
       left: 0;
       right: 0;
       z-index: 1000;
@@ -160,6 +216,7 @@
       grid-template-columns: repeat(12, 1fr);
       grid-template-rows: repeat(8, 1fr);
       padding: 0 3rem;
+      padding-top: 32px;
       gap: 1px;
       background: rgba(0,0,0,0.06);
       position: relative;
@@ -1351,6 +1408,10 @@
     @media (max-width: 1024px) {
       .cursor { display: none; }
 
+      .assessment-banner {
+        padding: 0.5rem 1.5rem;
+      }
+
       nav, .hero, .about, .services, .methodology, .resources, .stack, .metrics, .contact, footer {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
@@ -1464,6 +1525,14 @@
     }
 
     @media (max-width: 600px) {
+      .assessment-banner {
+        padding: 0.4rem 1rem;
+      }
+
+      .banner-text {
+        display: none;
+      }
+
       .nav-links {
         display: none;
       }
@@ -1503,6 +1572,15 @@
   </style>
 </head>
 <body>
+
+<!-- Assessment Banner -->
+<div class="assessment-banner">
+  <div class="banner-content">
+    <span class="banner-dot"></span>
+    <span class="banner-text">New: DTC Analytics Maturity Assessment</span>
+    <a href="https://assessment.maxmin.agency/" class="banner-link">Take the 5-min quiz →</a>
+  </div>
+</div>
 
 <!-- Grid Overlay -->
 <div class="grid-overlay">
