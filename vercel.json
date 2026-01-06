@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "gangrene.vercel.app"
+        }
+      ],
+      "destination": "https://www.maxmin.agency/:path*",
+      "permanent": true
+    }
+  ]
+}
