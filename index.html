@@ -252,7 +252,7 @@
       font-family: 'Newsreader', serif;
       font-size: clamp(2.5rem, 6vw, 5rem);
       font-weight: 400;
-      line-height: 1.1;
+      line-height: 1.05;
       letter-spacing: -0.02em;
       overflow: hidden;
     }
@@ -301,6 +301,7 @@
       cursor: pointer;
     }
 
+    /* Refined thin lines inside black block */
     .hero-black-block .line-h {
       position: absolute;
       height: 1px;
@@ -442,6 +443,7 @@
       animation-delay: 2.2s, 2.7s;
     }
 
+    /* Corner brackets */
     .hero-black-block .bracket {
       position: absolute;
       width: 20px;
@@ -626,39 +628,45 @@
       50% { transform: scaleY(0.5); opacity: 0.5; }
     }
 
-    .hero-letter {
+    .hero-accent {
       grid-column: 3 / 5;
       grid-row: 6 / 8;
       background: var(--cream);
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
       padding: 1.5rem;
-      cursor: pointer;
-      overflow: hidden;
+      position: relative;
     }
 
-    .hero-letter span {
+    .hero-accent::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+    }
+
+    .accent-number {
       font-family: 'Newsreader', serif;
-      font-size: 6rem;
-      line-height: 1;
+      font-size: 2rem;
       color: var(--red);
-      animation: letterWeave 10s ease-in-out infinite;
+      opacity: 0.4;
     }
 
-    @keyframes letterWeave {
-      0%, 100% { transform: scale(1.2) translateY(-10px); }
-      50% { transform: scale(1.15) translateY(-5px); }
-    }
-
-    /* Problems Section */
-    .problems {
+    /* About Section */
+    .about {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       padding: 0 3rem;
       border-top: 1px solid rgba(0,0,0,0.08);
     }
 
-    .problems-sidebar {
+    .about-sidebar {
       grid-column: span 3;
       padding: 4rem 2rem 4rem 0;
       border-right: 1px solid rgba(0,0,0,0.08);
@@ -692,41 +700,47 @@
       transform: scaleX(1);
     }
 
-    .problems-content {
-      grid-column: span 9;
+    .about-content {
+      grid-column: span 6;
       padding: 4rem 3rem;
+      border-right: 1px solid rgba(0,0,0,0.08);
     }
 
-    .problems-intro {
+    .about-text {
       font-family: 'Newsreader', serif;
-      font-size: 1.5rem;
-      line-height: 1.6;
-      margin-bottom: 3rem;
-      max-width: 700px;
+      font-size: 1.15rem;
+      line-height: 1.85;
+      text-align: justify;
+      hyphens: auto;
+      color: var(--black);
     }
 
-    .problems-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+    .about-aside {
+      grid-column: span 3;
+      padding: 4rem 0 4rem 2rem;
     }
 
-    .problem-item {
-      padding: 1.5rem;
-      background: var(--light-gray);
-      position: relative;
-      font-size: 0.95rem;
-      line-height: 1.6;
+    .aside-item {
+      margin-bottom: 2.5rem;
+      transform: translateX(10px);
     }
 
-    .problem-item::before {
-      content: '→';
+    .aside-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--red);
-      margin-right: 0.75rem;
+      margin-bottom: 0.5rem;
     }
 
-    /* Who Section */
-    .who {
+    .aside-value {
+      font-family: 'Newsreader', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Problems Section */
+    .problems {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       padding: 0 3rem;
@@ -734,36 +748,120 @@
       color: var(--cream);
     }
 
-    .who-header {
+    .problems-header {
       grid-column: span 12;
-      padding: 4rem 0 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 3rem 0;
     }
 
-    .who-title {
+    .problems-title {
+      grid-column: span 6;
       font-family: 'Newsreader', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 400;
     }
 
-    .who-content {
+    .problems-desc {
+      grid-column: 8 / 12;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .problems-grid {
       grid-column: span 12;
-      padding: 3rem 0 4rem;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
     }
 
-    .who-item {
-      padding: 1.5rem 0;
-      border-top: 2px solid var(--red);
+    .problem-card {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+      position: relative;
     }
 
-    .who-item p {
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .problem-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .problem-card p {
       font-family: 'Newsreader', serif;
       font-size: 1.1rem;
       line-height: 1.6;
       color: rgba(255,255,255,0.85);
+    }
+
+    /* Who Section */
+    .who {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .who-sidebar {
+      grid-column: span 3;
+      padding: 4rem 2rem 4rem 0;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .who-title {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .who-content {
+      grid-column: span 9;
+      padding: 4rem 0 4rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .who-item {
+      background: var(--cream);
+      padding: 2rem;
+      position: relative;
+    }
+
+    .who-item::before {
+      content: '→';
+      color: var(--red);
+      margin-right: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .who-item p {
+      display: inline;
+      font-family: 'Newsreader', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
 
     /* Services Section */
@@ -814,7 +912,7 @@
       padding: 3rem 2rem;
       display: flex;
       flex-direction: column;
-      min-height: 400px;
+      min-height: 350px;
       position: relative;
       overflow: hidden;
     }
@@ -887,7 +985,7 @@
       font-size: 0.85rem;
       letter-spacing: 0.2em;
       color: var(--red);
-      margin-bottom: 1.5rem;
+      margin-bottom: auto;
     }
 
     .service-name {
@@ -900,11 +998,10 @@
       font-size: 0.95rem;
       line-height: 1.8;
       color: var(--gray);
-      margin-bottom: 1.5rem;
     }
 
-    /* How Section */
-    .how {
+    /* Methodology Section */
+    .methodology {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       padding: 0 3rem;
@@ -912,7 +1009,7 @@
       background: rgba(0,0,0,0.06);
     }
 
-    .how-header {
+    .methodology-header {
       grid-column: span 12;
       background: var(--cream);
       display: grid;
@@ -921,14 +1018,14 @@
       border-bottom: 1px solid rgba(0,0,0,0.08);
     }
 
-    .how-title {
+    .methodology-title {
       grid-column: span 6;
       font-family: 'Newsreader', serif;
       font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 400;
     }
 
-    .how-desc {
+    .methodology-desc {
       grid-column: 8 / 13;
       display: flex;
       align-items: flex-end;
@@ -938,7 +1035,7 @@
       color: var(--gray);
     }
 
-    .how-grid {
+    .methodology-grid {
       grid-column: span 12;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -946,14 +1043,14 @@
       background: rgba(0,0,0,0.08);
     }
 
-    .how-card {
+    .method-card {
       background: var(--cream);
       padding: 3rem 2rem;
       position: relative;
-      min-height: 280px;
+      min-height: 320px;
     }
 
-    .how-card::before {
+    .method-card::before {
       content: '';
       position: absolute;
       top: 0;
@@ -963,7 +1060,7 @@
       background: var(--red);
     }
 
-    .how-number {
+    .method-number {
       font-family: 'Newsreader', serif;
       font-size: 3rem;
       color: var(--red);
@@ -971,15 +1068,34 @@
       margin-bottom: 1rem;
     }
 
-    .how-card-title {
+    .method-title {
       font-family: 'Newsreader', serif;
       font-size: 1.4rem;
       margin-bottom: 1rem;
     }
 
-    .how-card-desc {
+    .method-desc {
       font-size: 0.85rem;
       line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .method-tags {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .method-tag {
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid rgba(0,0,0,0.15);
       color: var(--gray);
     }
 
@@ -1175,7 +1291,7 @@
 
     .contact-title {
       font-family: 'Newsreader', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2rem, 4vw, 3.5rem);
       font-weight: 400;
       line-height: 1.2;
       margin-bottom: 2rem;
@@ -1308,11 +1424,13 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
+      .cursor { display: none; }
+
       .assessment-banner {
         padding: 0.5rem 1.5rem;
       }
 
-      nav, .hero, .problems, .who, .services, .how, .resources, .contact, footer {
+      nav, .hero, .about, .problems, .who, .services, .methodology, .resources, .contact, footer {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
       }
@@ -1353,33 +1471,56 @@
         display: none;
       }
 
-      .problems {
+      .about {
         grid-template-columns: 1fr;
       }
 
-      .problems-sidebar {
+      .about-sidebar {
         border-right: none;
         border-bottom: 1px solid rgba(0,0,0,0.08);
         padding: 3rem 0;
       }
 
-      .problems-content {
+      .about-content {
+        border-right: none;
         padding: 3rem 0;
       }
 
+      .about-aside {
+        padding: 3rem 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .aside-item {
+        margin-bottom: 0;
+      }
+
       .problems-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .who {
         grid-template-columns: 1fr;
       }
 
+      .who-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        padding: 3rem 0;
+      }
+
       .who-content {
-        grid-template-columns: repeat(2, 1fr);
+        padding: 3rem 0;
+        grid-template-columns: 1fr;
       }
 
       .services-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .how-grid {
+      .methodology-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -1418,7 +1559,7 @@
         grid-column: span 6;
       }
 
-      .who-content {
+      .problems-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1426,7 +1567,7 @@
         grid-template-columns: 1fr;
       }
 
-      .how-grid {
+      .methodology-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1533,34 +1674,68 @@
   <div class="hero-scroll">
     <span class="scroll-indicator">Scroll</span>
   </div>
-  <div class="hero-letter">
-    <span>Δ</span>
+  <div class="hero-accent">
+    <span class="accent-number">02</span>
   </div>
   <div class="hero-cell" style="grid-column: span 8; grid-row: 8;"></div>
 </section>
 
-<!-- Problems -->
-<section class="problems" id="problems">
-  <div class="problems-sidebar">
-    <p class="section-label">The Problem</p>
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-sidebar">
+    <p class="section-label">About</p>
     <span class="section-number">01</span>
   </div>
-  <div class="problems-content">
-    <p class="problems-intro">Meta says one thing. GA4 says another. Shopify says something else. You're spending real money on ads and have no idea what's actually working.</p>
-    <div class="problems-grid">
-      <div class="problem-item">GA4 shows 50 conversions, Meta shows 120, Shopify shows 85</div>
-      <div class="problem-item">ROAS tanked after iOS 14.5 and you don't know what's real</div>
-      <div class="problem-item">CAPI is "set up" but you're not sure it's actually working</div>
-      <div class="problem-item">Scaling spend but flying blind on channel efficiency</div>
-      <div class="problem-item">Triple Whale / Northbeam gave you more dashboards, not more clarity</div>
-      <div class="problem-item">Making budget decisions based on platform-reported numbers you don't trust</div>
+  <div class="about-content">
+    <p class="about-text">Meta says one thing. GA4 says another. Shopify says something else. You're spending real money on ads and have no idea what's actually working. We fix the tracking, build measurement systems you can trust, and show you where to put your next dollar.</p>
+  </div>
+  <div class="about-aside">
+    <div class="aside-item">
+      <p class="aside-label">Focus</p>
+      <p class="aside-value">DTC attribution and measurement that actually matches</p>
+    </div>
+    <div class="aside-item">
+      <p class="aside-label">Approach</p>
+      <p class="aside-value">Senior practitioners<br>No fluff<br>Assets you own</p>
+    </div>
+    <div class="aside-item">
+      <p class="aside-label">Outcome</p>
+      <p class="aside-value">Numbers you trust<br>Decisions you can make<br>Money you stop wasting</p>
+    </div>
+  </div>
+</section>
+
+<!-- Problems -->
+<section class="problems" id="problems">
+  <div class="problems-header">
+    <h2 class="problems-title">Sound familiar?</h2>
+    <p class="problems-desc">The measurement problems we solve every week.</p>
+  </div>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <p>GA4 shows 50 conversions, Meta shows 120, Shopify shows 85</p>
+    </div>
+    <div class="problem-card">
+      <p>ROAS tanked after iOS 14.5 and you don't know what's real</p>
+    </div>
+    <div class="problem-card">
+      <p>CAPI is "set up" but you're not sure it's actually working</p>
+    </div>
+    <div class="problem-card">
+      <p>Scaling spend but flying blind on channel efficiency</p>
+    </div>
+    <div class="problem-card">
+      <p>Triple Whale / Northbeam gave you more dashboards, not more clarity</p>
+    </div>
+    <div class="problem-card">
+      <p>Making budget decisions based on numbers you don't trust</p>
     </div>
   </div>
 </section>
 
 <!-- Who This Is For -->
 <section class="who" id="who">
-  <div class="who-header">
+  <div class="who-sidebar">
     <h2 class="who-title">This is for you if:</h2>
   </div>
   <div class="who-content">
@@ -1595,7 +1770,7 @@
     <div class="service-card">
       <span class="service-number">02</span>
       <h3 class="service-name">Marketing Mix Modeling</h3>
-      <p class="service-desc">Know what's actually driving revenue—not what the platforms want you to believe. Channel-level attribution that accounts for iOS changes, delayed conversions, and cross-channel effects.</p>
+      <p class="service-desc">Know what's actually driving revenue. Channel-level attribution that accounts for iOS changes, delayed conversions, and cross-channel effects.</p>
       <div class="service-icon">↗</div>
     </div>
     <div class="service-card">
@@ -1607,27 +1782,42 @@
   </div>
 </section>
 
-<!-- How We Work -->
-<section class="how" id="how">
-  <div class="how-header">
-    <h2 class="how-title">How it works</h2>
-    <p class="how-desc">Most engagements: 2-6 weeks. You get the deliverables, the documentation, and the confidence to act.</p>
+<!-- Methodology -->
+<section class="methodology" id="how">
+  <div class="methodology-header">
+    <h2 class="methodology-title">How we work</h2>
+    <p class="methodology-desc">Most engagements: 2-6 weeks. You get the deliverables, the documentation, and the confidence to act.</p>
   </div>
-  <div class="how-grid">
-    <div class="how-card">
-      <span class="how-number">01</span>
-      <h3 class="how-card-title">Audit</h3>
-      <p class="how-card-desc">We map your current tracking setup, identify gaps and misconfigurations, and document exactly where your numbers diverge and why.</p>
+  <div class="methodology-grid">
+    <div class="method-card">
+      <span class="method-number">01</span>
+      <h3 class="method-title">Audit</h3>
+      <p class="method-desc">We map your current tracking setup, identify gaps and misconfigurations, and document exactly where your numbers diverge and why.</p>
+      <div class="method-tags">
+        <span class="method-tag">Discovery</span>
+        <span class="method-tag">Data Audit</span>
+        <span class="method-tag">Gap Analysis</span>
+      </div>
     </div>
-    <div class="how-card">
-      <span class="how-number">02</span>
-      <h3 class="how-card-title">Fix</h3>
-      <p class="how-card-desc">Prioritized fixes based on impact. We either implement directly or hand off a detailed spec to your team. No black boxes.</p>
+    <div class="method-card">
+      <span class="method-number">02</span>
+      <h3 class="method-title">Fix</h3>
+      <p class="method-desc">Prioritized fixes based on impact. We either implement directly or hand off a detailed spec to your team. No black boxes.</p>
+      <div class="method-tags">
+        <span class="method-tag">Implementation</span>
+        <span class="method-tag">Testing</span>
+        <span class="method-tag">Validation</span>
+      </div>
     </div>
-    <div class="how-card">
-      <span class="how-number">03</span>
-      <h3 class="how-card-title">Measure</h3>
-      <p class="how-card-desc">Once tracking is solid, we build the measurement layer—MMM, incrementality frameworks, or custom reporting that you can actually trust.</p>
+    <div class="method-card">
+      <span class="method-number">03</span>
+      <h3 class="method-title">Measure</h3>
+      <p class="method-desc">Once tracking is solid, we build the measurement layer: MMM, incrementality frameworks, or custom reporting that you can actually trust.</p>
+      <div class="method-tags">
+        <span class="method-tag">Modeling</span>
+        <span class="method-tag">Reporting</span>
+        <span class="method-tag">Handoff</span>
+      </div>
     </div>
   </div>
 </section>
