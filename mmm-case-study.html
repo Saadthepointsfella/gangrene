@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MMM Case Study: DTC Brand Attribution | MaxMin</title>
+  <meta name="description" content="How we used Marketing Mix Modeling to uncover a hidden attribution problem: Email was consuming 39% of impressions for just 7% of attributed sales.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MMM Case Study: DTC Brand Attribution | MaxMin">
+  <meta property="og:description" content="How we used Marketing Mix Modeling to uncover a hidden attribution problem costing a DTC brand 39% of their email effort.">
+  <meta property="og:site_name" content="MaxMin">
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cream: #f5f2ed;
+      --cream-dark: #eae6df;
+      --black: #1a1a1a;
+      --gray: #6b6b6b;
+      --gray-light: #9a9a9a;
+      --red: #C54B4B;
+      --grid-color: rgba(0,0,0,0.055);
+      --grid-color-soft: rgba(0,0,0,0.04);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Inter", -apple-system, system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--black);
+      line-height: 1.75;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .grid-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .grid-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color-soft) 1px, transparent 1px);
+      background-size: calc(100% / 12) 100%, 100% 96px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider { height: 1px; background: var(--grid-color); width: 100%; }
+
+    /* Site Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid var(--grid-color);
+      padding: 0 3rem;
+    }
+
+    .site-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      max-width: none;
+    }
+
+    .logo {
+      text-decoration: none;
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-max { color: var(--black); }
+    .logo-min { color: var(--red); }
+
+    .logo-symbol { display: flex; align-items: center; }
+    .logo-symbol svg { height: 36px; width: auto; }
+
+    .header-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--black);
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .header-cta span { position: relative; z-index: 1; }
+
+    .kicker {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+    }
+
+    .meta-number {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--red);
+      margin-top: 10px;
+    }
+
+    .section-title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 32px;
+    }
+
+    .hero { padding: 120px 0 88px; }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 96px 1fr 260px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .meta-stack { padding-top: 6px; }
+
+    .hero h1 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.9rem;
+      font-weight: 400;
+      line-height: 1.15;
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+
+    .hero p { max-width: 660px; color: var(--gray); font-size: 15px; }
+
+    .sidebar { padding-top: 6px; display: grid; gap: 20px; }
+    .sidebar-block { border-top: 1px solid var(--grid-color); padding-top: 14px; }
+    .sidebar-block:first-child { border-top: 0; padding-top: 0; }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .sidebar-text { font-size: 13px; line-height: 1.7; color: var(--black); }
+
+    .section { padding: 88px 0; }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-meta { padding-top: 6px; }
+
+    .prose { max-width: 820px; }
+    .prose p { margin-bottom: 14px; color: var(--gray); }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--black); font-weight: 500; }
+
+    .prose ul {
+      margin-top: 12px;
+      padding-left: 18px;
+      color: var(--gray);
+    }
+    .prose li { margin-bottom: 10px; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--grid-color);
+      margin: 40px 0;
+    }
+
+    .stat-card {
+      background: var(--cream);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 3rem;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+      margin-top: 12px;
+    }
+
+    /* Figures */
+    figure {
+      margin: 40px 0;
+    }
+
+    figure img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--grid-color);
+    }
+
+    figcaption {
+      font-size: 12px;
+      color: var(--gray-light);
+      margin-top: 14px;
+      font-style: italic;
+    }
+
+    /* Tables */
+    .table-wrap { margin-top: 40px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+    th, td {
+      padding: 18px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--grid-color);
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+      background: var(--cream-dark);
+    }
+
+    th:first-child { width: 140px; }
+
+    td:first-child { font-weight: 500; color: var(--black); font-size: 12.5px; }
+    td { color: var(--gray); }
+
+    td small {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--gray-light);
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      background: var(--cream-dark);
+      color: var(--gray);
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .tag-problem {
+      background: #C54B4B;
+      color: var(--cream);
+    }
+
+    .tag-validate {
+      background: #d4a017;
+      color: var(--black);
+    }
+
+    .tag-ok {
+      background: #4a7c59;
+      color: var(--cream);
+    }
+
+    /* Recommendation cards */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--grid-color);
+      margin: 40px 0;
+    }
+
+    .rec-card {
+      background: var(--cream);
+      padding: 32px;
+    }
+
+    .rec-card.execute {
+      background: var(--black);
+      color: var(--cream);
+    }
+
+    .rec-card.execute h4 { color: var(--cream); }
+    .rec-card.execute p { color: rgba(245,242,237,0.82); }
+    .rec-card.execute strong { color: var(--cream); }
+
+    .rec-card h4 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--black);
+    }
+
+    .rec-card p {
+      font-size: 13.5px;
+      color: var(--gray);
+      line-height: 1.75;
+    }
+
+    .rec-card strong {
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    /* Panel */
+    .panel {
+      margin-top: 40px;
+      background: var(--cream-dark);
+      border: 1px solid var(--grid-color);
+      padding: 36px;
+    }
+
+    .panel h4 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.15;
+      color: var(--black);
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .panel-item strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .panel-item span {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta { padding: 92px 0; text-align: center; }
+
+    .cta h3 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 2.35rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .cta p {
+      color: var(--gray);
+      max-width: 760px;
+      margin: 0 auto 30px;
+      font-size: 13.5px;
+      line-height: 1.9;
+    }
+
+    .cta a {
+      display: inline-block;
+      background: var(--black);
+      color: var(--cream);
+      padding: 16px 38px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .cta a:hover { opacity: 0.86; }
+
+    @media (max-width: 1020px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 28px; }
+      .sidebar { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .section-grid { grid-template-columns: 1fr; gap: 22px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .rec-grid { grid-template-columns: 1fr; }
+      .panel-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0 1.5rem; }
+      .hero { padding: 100px 0 64px; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 22px; }
+      .hero { padding: 84px 0 60px; }
+      .section { padding: 64px 0; }
+      .sidebar { grid-template-columns: 1fr; }
+      .panel { padding: 26px 20px; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 700px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-bg"></div>
+
+  <!-- Site Header -->
+  <nav class="site-header">
+    <div class="container">
+      <a href="https://www.maxmin.agency" class="logo">
+        <span class="logo-max">MAX</span>
+        <span class="logo-symbol">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="32" height="28">
+            <path d="M8,72 L40,12 L72,72 Z" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linejoin="miter"/>
+            <path d="M28,18 L92,18 L60,78 Z" fill="none" stroke="#C54B4B" stroke-width="4.5" stroke-linejoin="miter"/>
+          </svg>
+        </span>
+        <span class="logo-min">MIN</span>
+      </a>
+      <a href="mailto:heya@maxmin.agency" class="header-cta"><span>Get in Touch</span></a>
+    </div>
+  </nav>
+
+  <article>
+    <header class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="meta-stack">
+            <div class="kicker">Case Study</div>
+            <div class="meta-number">01</div>
+          </div>
+
+          <div>
+            <h1>Email was consuming 39% of impressions for 7% of attributed sales. The model found it.</h1>
+            <p>
+              An established DTC home decor brand came to us with a familiar problem: Meta said one thing, GA4 said another, Shopify said something else. They had been running paid media across five channels for years, built a large email list, and hit eight figures in revenue. But they had no idea which channels were actually driving growth versus taking credit for customers who would have bought anyway.
+            </p>
+          </div>
+
+          <aside class="sidebar">
+            <div class="sidebar-block">
+              <div class="sidebar-label">What They Wanted</div>
+              <div class="sidebar-text">Know which channels are pulling their weight.</div>
+            </div>
+            <div class="sidebar-block">
+              <div class="sidebar-label">What Broke</div>
+              <div class="sidebar-text">Platform reporting taking credit it did not earn.</div>
+            </div>
+            <div class="sidebar-block">
+              <div class="sidebar-label">What We Did</div>
+              <div class="sidebar-text">Model the mix, flag the gaps, validate before reallocating.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- The Problem -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Context</div>
+            <div class="meta-number">02</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">The Problem</h2>
+            <div class="prose">
+              <p>This was a mature DTC home decor brand. The kind of purchase people research before buying. Average order value north of $150, strong holiday seasonality, and a loyal customer base built over several years.</p>
+              <p>They had done the work. CAPI was set up. UTMs were (mostly) clean. They were running Google, Meta, Email, Affiliate, and Paid Views across a mature marketing operation. But the numbers still did not reconcile.</p>
+              <p><strong>The real question was not "what is working."</strong> It was "how much of our revenue would happen anyway, and which channels are actually moving the needle versus taking credit for existing demand."</p>
+              <p>With 81% of sales coming from baseline demand (repeat customers, organic search, word-of-mouth), getting channel attribution wrong meant potentially wasting budget on channels that were just capturing demand they did not create.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- What We Built -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Method</div>
+            <div class="meta-number">03</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">What We Built</h2>
+            <div class="prose">
+              <p>Bayesian Marketing Mix Model in PyMC. 113 weeks of data, January 2023 through March 2025. Five channels measured on impressions.</p>
+              <ul>
+                <li><strong>Adstock transformation</strong>  geometric decay with channel-specific retention to capture how advertising effects persist</li>
+                <li><strong>Saturation curves</strong>  Hill function with channel-specific parameters to model diminishing returns</li>
+                <li><strong>Seasonality controls</strong>  Fourier terms for annual patterns plus holiday indicators</li>
+                <li><strong>Bayesian estimation</strong>  NUTS sampler, 2 chains × 2,000 draws, proper uncertainty on every estimate</li>
+              </ul>
+              <p>The model explained 87% of weekly sales variance. 14% mean absolute error. Solid for this type of analysis.</p>
+            </div>
+
+            <figure>
+              <img src="model-fit.png" alt="Model Fit: Actual vs Predicted Sales">
+              <figcaption>Actual vs predicted weekly sales. The model tracks trend and seasonality well. The holiday spikes (Black Friday, Christmas) are typical for home decor, where gifting drives Q4.</figcaption>
+            </figure>
+
+            <div class="stats-row">
+              <div class="stat-card">
+                <div class="stat-number">87%</div>
+                <div class="stat-label">Variance Explained (R²)</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">113</div>
+                <div class="stat-label">Weeks of Data</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Channels Modeled</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Findings -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Findings</div>
+            <div class="meta-number">04</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">What We Found</h2>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Channel</th>
+                    <th>% Impressions</th>
+                    <th>% Attributed Sales</th>
+                    <th>Flag</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Google</td>
+                    <td>43%</td>
+                    <td>81%</td>
+                    <td>
+                      <span class="tag tag-validate">Validate carryover</span>
+                      <small>~15 week decay is longer than typical paid search. For a considered purchase like home decor, customers research for weeks before buying. Google is capturing that intent, but how much is it creating?</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>39%</td>
+                    <td>7%</td>
+                    <td>
+                      <span class="tag tag-problem">Volume/efficiency gap</span>
+                      <small>Years of list-building created a large but fatigued audience. Most recipients are existing customers who would buy anywayemail is getting credit, not creating demand.</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Facebook</td>
+                    <td>15%</td>
+                    <td>6%</td>
+                    <td>
+                      <span class="tag tag-ok">Proportional</span>
+                      <small>Contribution matches impression share.</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Affiliate</td>
+                    <td>2%</td>
+                    <td>4%</td>
+                    <td>
+                      <span class="tag tag-validate">Test incrementality</span>
+                      <small>High efficiency at small scale often reflects demand capture.</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Paid Views</td>
+                    <td>1%</td>
+                    <td>2%</td>
+                    <td>
+                      <span class="tag tag-ok">Small scale</span>
+                      <small>Too small for confident conclusions.</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="prose" style="margin-top: 32px;">
+              <p><strong>Baseline (non-media demand) accounted for ~81% of total sales.</strong> This is typical for an established brand with strong organic demand. Years of brand-building, repeat customers, and word-of-mouth mean most revenue would happen without any paid media. The strategic question becomes: which 19% of media spend is actually incremental, and which is just taking credit?</p>
+            </div>
+
+            <figure>
+              <img src="channel-contribution.png" alt="Channel Contribution to Sales">
+              <figcaption>Media attribution breakdown. Google dominatespending carryover validation.</figcaption>
+            </figure>
+
+            <h2 class="section-title" style="margin-top: 56px;">Diminishing Returns</h2>
+
+            <div class="prose">
+              <p>Response curves show how each channel's marginal impact changes with volume. Red dashed line marks current levels.</p>
+            </div>
+
+            <figure>
+              <img src="response-curves.png" alt="Response Curves: Diminishing Returns by Channel">
+              <figcaption>Google shows saturation at current levels. Smaller channels remain in the linear (efficient) region.</figcaption>
+            </figure>
+
+            <h2 class="section-title" style="margin-top: 56px;">Optimizer Output</h2>
+
+            <div class="prose">
+              <p>The model suggests reallocating impressions toward Google and away from Email/Facebook. Important caveat: this operates on impressions, not dollars. Email is fixed-cost (SaaS), so "savings" there do not fund other channels.</p>
+            </div>
+
+            <figure>
+              <img src="optimizer-output.png" alt="Current vs Recommended Allocation">
+              <figcaption>Left: impression reallocation. Right: projected weekly sales by scenario. The +16% uplift is model-projected, not guaranteed.</figcaption>
+            </figure>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Recommendations -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Action</div>
+            <div class="meta-number">05</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Recommendations</h2>
+
+            <div class="rec-grid">
+              <div class="rec-card execute">
+                <h4>Execute Now</h4>
+                <p><strong>Reduce email frequency 20-30%.</strong> No budget impact (fixed SaaS cost). The list is large but fatiguedmostly existing customers who already know the brand. Cutting frequency tests whether engagement improves and whether those sales were incremental or would have happened anyway.</p>
+              </div>
+              <div class="rec-card">
+                <h4>Test First</h4>
+                <p><strong>Google geo-holdout.</strong> Pause Google in 2-3 regions for 6-8 weeks. For home decor where customers research for weeks before buying, the 15-week carryover could be real. Or it could be brand search capturing existing intent. A geo-test isolates the truth.</p>
+              </div>
+              <div class="rec-card">
+                <h4>Test First</h4>
+                <p><strong>Affiliate incrementality.</strong> Promo code holdouts or matched market tests. Confirm the channel is creating demand, not just capturing existing intent.</p>
+              </div>
+              <div class="rec-card">
+                <h4>Hold</h4>
+                <p><strong>No large budget shifts yet.</strong> The model projects ~15% uplift from reallocation. That is contingent on assumptions that need validation first.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Outcome -->
+    <section class="section">
+      <div class="container">
+        <div class="section-grid">
+          <div class="section-meta">
+            <div class="kicker">Result</div>
+            <div class="meta-number">06</div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Outcome</h2>
+
+            <div class="prose">
+              <p>The model projected approximately 15% sales uplift from optimal impression reallocation. We were clear with the client: that is a model projection, not a guarantee.</p>
+              <p><strong>The real value was not the specific number.</strong> It was having a framework for where to test instead of guessing.</p>
+              <p>The team walked away with:</p>
+              <ul>
+                <li>Clear evidence that email volume needed to come down</li>
+                <li>A specific test design for validating Google's true contribution</li>
+                <li>Confidence to hold budget steady until they had real incrementality data</li>
+                <li>Response curves showing diminishing returns thresholds for each channel</li>
+              </ul>
+            </div>
+
+            <div class="panel">
+              <h4>Methodology Details</h4>
+              <div class="panel-grid">
+                <div class="panel-item">
+                  <strong>Model Framework</strong>
+                  <span>Bayesian regression in PyMC with NUTS sampler (2 chains × 2,000 draws)</span>
+                </div>
+                <div class="panel-item">
+                  <strong>Adstock</strong>
+                  <span>Geometric decay with channel-specific retention, Beta(2,2) prior</span>
+                </div>
+                <div class="panel-item">
+                  <strong>Saturation</strong>
+                  <span>Hill function with channel-specific EC50 and slope parameters</span>
+                </div>
+                <div class="panel-item">
+                  <strong>Validation</strong>
+                  <span>R-hat < 1.01, ESS > 400, zero divergences, residual diagnostics clean</span>
+                </div>
+                <div class="panel-item">
+                  <strong>Collinearity Check</strong>
+                  <span>All VIF values < 5 (max 3.25), channels sufficiently distinguishable</span>
+                </div>
+                <div class="panel-item">
+                  <strong>Baseline</strong>
+                  <span>~81% of sales attributed to non-media demand (intercept + controls)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <footer class="cta">
+      <div class="container">
+        <h3>Not sure where your numbers stand?</h3>
+        <p>Send what you have. We will audit the data, tell you what is missing, and propose a scope that is realistic in weeks.</p>
+        <a href="mailto:heya@maxmin.agency">heya@maxmin.agency</a>
+      </div>
+    </footer>
+
+  </article>
+</body>
+</html>

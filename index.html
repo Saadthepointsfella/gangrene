@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marketing Analytics Agency | MaxMin</title>
+  <title>DTC Attribution & Measurement | MaxMin</title>
   <link rel="canonical" href="https://www.maxmin.agency/">
-  <meta name="description" content="MaxMin is a marketing analytics agency that builds measurement, modeling, and data systems for decision-ready insights. Senior practitioners. No fluff.">
+  <meta name="description" content="Your Meta, GA4, and Shopify numbers don't match. We fix DTC attribution and measurement so you know what's actually working.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Marketing Analytics Agency | MaxMin">
-  <meta property="og:description" content="MaxMin is a marketing analytics agency that builds measurement, modeling, and data systems for decision-ready insights. Senior practitioners. No fluff.">
+  <meta property="og:title" content="DTC Attribution & Measurement | MaxMin">
+  <meta property="og:description" content="Your Meta, GA4, and Shopify numbers don't match. We fix DTC attribution and measurement so you know what's actually working.">
   <meta property="og:url" content="https://www.maxmin.agency/">
   <meta property="og:site_name" content="MaxMin">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Marketing Analytics Agency | MaxMin">
-  <meta name="twitter:description" content="MaxMin is a marketing analytics agency that builds measurement, modeling, and data systems for decision-ready insights. Senior practitioners. No fluff.">
+  <meta name="twitter:title" content="DTC Attribution & Measurement | MaxMin">
+  <meta name="twitter:description" content="Your Meta, GA4, and Shopify numbers don't match. We fix DTC attribution and measurement so you know what's actually working.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -250,9 +250,9 @@
 
     .hero-title {
       font-family: 'Newsreader', serif;
-      font-size: clamp(3rem, 8vw, 7rem);
+      font-size: clamp(2.5rem, 6vw, 5rem);
       font-weight: 400;
-      line-height: 0.95;
+      line-height: 1.05;
       letter-spacing: -0.02em;
       overflow: hidden;
     }
@@ -284,11 +284,11 @@
 
     .hero-subtitle {
       font-size: 0.85rem;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--black);
       margin-top: 2rem;
-      max-width: 300px;
+      max-width: 400px;
       line-height: 1.8;
     }
 
@@ -628,28 +628,34 @@
       50% { transform: scaleY(0.5); opacity: 0.5; }
     }
 
-    .hero-letter {
+    .hero-accent {
       grid-column: 3 / 5;
       grid-row: 6 / 8;
       background: var(--cream);
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
       padding: 1.5rem;
-      cursor: pointer;
-      overflow: hidden;
+      position: relative;
     }
 
-    .hero-letter span {
+    .hero-accent::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+    }
+
+    .accent-number {
       font-family: 'Newsreader', serif;
-      font-size: 6rem;
-      line-height: 1;
+      font-size: 2rem;
       color: var(--red);
-      animation: letterWeave 10s ease-in-out infinite;
-    }
-
-    @keyframes letterWeave {
-      0%, 100% { transform: scale(1.2) translateY(-10px); }
-      50% { transform: scale(1.15) translateY(-5px); }
+      opacity: 0.4;
     }
 
     /* About Section */
@@ -700,22 +706,6 @@
       border-right: 1px solid rgba(0,0,0,0.08);
     }
 
-    .about-dropcap {
-      font-family: 'Newsreader', serif;
-      font-size: 7rem;
-      line-height: 0.8;
-      float: left;
-      margin-right: 1rem;
-      margin-top: 0.75rem;
-      color: var(--red);
-      animation: dropcapWeave 8s ease-in-out infinite;
-    }
-
-    @keyframes dropcapWeave {
-      0%, 100% { transform: scale(1.1); }
-      50% { transform: scale(1.05); }
-    }
-
     .about-text {
       font-family: 'Newsreader', serif;
       font-size: 1.15rem;
@@ -723,11 +713,6 @@
       text-align: justify;
       hyphens: auto;
       color: var(--black);
-    }
-
-    .about-text + .about-text {
-      margin-top: 1.5rem;
-      text-indent: 2rem;
     }
 
     .about-aside {
@@ -749,6 +734,131 @@
     }
 
     .aside-value {
+      font-family: 'Newsreader', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Problems Section */
+    .problems {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      background: var(--black);
+      color: var(--cream);
+    }
+
+    .problems-header {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 3rem 0;
+    }
+
+    .problems-title {
+      grid-column: span 6;
+      font-family: 'Newsreader', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 400;
+    }
+
+    .problems-desc {
+      grid-column: 8 / 12;
+      display: flex;
+      align-items: flex-end;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .problems-grid {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .problem-card {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+      position: relative;
+    }
+
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .problem-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .problem-card p {
+      font-family: 'Newsreader', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* Who Section */
+    .who {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 3rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .who-sidebar {
+      grid-column: span 3;
+      padding: 4rem 2rem 4rem 0;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .who-title {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .who-content {
+      grid-column: span 9;
+      padding: 4rem 0 4rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .who-item {
+      background: var(--cream);
+      padding: 2rem;
+      position: relative;
+    }
+
+    .who-item::before {
+      content: '→';
+      color: var(--red);
+      margin-right: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .who-item p {
+      display: inline;
       font-family: 'Newsreader', serif;
       font-size: 1.1rem;
       line-height: 1.6;
@@ -1026,7 +1136,7 @@
     .resources-grid {
       grid-column: span 12;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: rgba(0,0,0,0.08);
     }
@@ -1133,129 +1243,6 @@
       transform: translateX(4px);
     }
 
-    /* Tech Stack Section */
-    .stack {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      padding: 0 3rem;
-      background: var(--cream);
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .stack-header {
-      grid-column: span 3;
-      padding: 4rem 2rem 4rem 0;
-      border-right: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .stack-content {
-      grid-column: span 3;
-      padding: 4rem 2rem;
-      border-right: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .stack-intro {
-      font-family: 'Newsreader', serif;
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--gray);
-    }
-
-    .stack-grid {
-      grid-column: span 6;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(0,0,0,0.08);
-    }
-
-    .stack-category {
-      background: var(--cream);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stack-category::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--red);
-      transform: scaleX(1);
-    }
-
-    .stack-category-title {
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.75rem;
-    }
-
-    .stack-items {
-      font-family: 'Newsreader', serif;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      transform: translateX(5px);
-    }
-
-    /* Metrics Section */
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      padding: 0 3rem;
-      background: var(--cream);
-      border-top: 1px solid rgba(0,0,0,0.08);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .metrics-content {
-      grid-column: 2 / 12;
-      padding: 5rem 0;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-    }
-
-    .metric-item {
-      text-align: center;
-      padding: 2rem;
-      position: relative;
-    }
-
-    .metric-item::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 20%;
-      height: 60%;
-      width: 1px;
-      background: rgba(0,0,0,0.1);
-    }
-
-    .metric-item:last-child::after {
-      display: none;
-    }
-
-    .metric-value {
-      font-family: 'Newsreader', serif;
-      font-size: 3.5rem;
-      font-weight: 400;
-      color: var(--red);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .metric-label {
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
-
     /* Contact Section */
     .contact {
       display: grid;
@@ -1307,16 +1294,36 @@
       font-size: clamp(2rem, 4vw, 3.5rem);
       font-weight: 400;
       line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+
+    .contact-cta {
+      display: inline-block;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 1rem 2rem;
+      background: var(--black);
+      border: 1px solid var(--black);
+      transition: all 0.3s ease;
       margin-bottom: auto;
+    }
+
+    .contact-cta:hover {
+      background: var(--red);
+      border-color: var(--red);
     }
 
     .contact-email {
       font-family: 'Newsreader', serif;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       color: var(--black);
       text-decoration: none;
       position: relative;
       display: inline-block;
+      margin-top: 2rem;
     }
 
     .contact-email::after {
@@ -1423,7 +1430,7 @@
         padding: 0.5rem 1.5rem;
       }
 
-      nav, .hero, .about, .services, .methodology, .resources, .stack, .metrics, .contact, footer {
+      nav, .hero, .about, .problems, .who, .services, .methodology, .resources, .contact, footer {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
       }
@@ -1490,6 +1497,25 @@
         margin-bottom: 0;
       }
 
+      .problems-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .who {
+        grid-template-columns: 1fr;
+      }
+
+      .who-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        padding: 3rem 0;
+      }
+
+      .who-content {
+        padding: 3rem 0;
+        grid-template-columns: 1fr;
+      }
+
       .services-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -1500,29 +1526,6 @@
 
       .resources-grid {
         grid-template-columns: 1fr;
-      }
-
-      .stack {
-        grid-template-columns: 1fr;
-      }
-
-      .stack-header {
-        border-right: none;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
-        padding: 3rem 0;
-      }
-
-      .stack-content {
-        border-right: none;
-        padding: 3rem 0;
-      }
-
-      .stack-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .metrics-content {
-        grid-template-columns: repeat(2, 1fr);
       }
 
       .contact-left,
@@ -1556,24 +1559,16 @@
         grid-column: span 6;
       }
 
+      .problems-grid {
+        grid-template-columns: 1fr;
+      }
+
       .services-grid {
         grid-template-columns: 1fr;
       }
 
       .methodology-grid {
         grid-template-columns: 1fr;
-      }
-
-      .stack-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metrics-content {
-        grid-template-columns: 1fr;
-      }
-
-      .metric-item::after {
-        display: none;
       }
 
       .contact-right {
@@ -1600,8 +1595,8 @@
 <div class="assessment-banner">
   <div class="banner-content">
     <span class="banner-dot"></span>
-    <span class="banner-text">New: DTC Analytics Maturity Assessment</span>
-    <a href="https://assessment.maxmin.agency/" class="banner-link">Take the 5-min quiz →</a>
+    <span class="banner-text">Free: 5-min DTC Analytics Assessment</span>
+    <a href="https://assessment.maxmin.agency/" class="banner-link">Take the quiz →</a>
   </div>
 </div>
 
@@ -1622,13 +1617,12 @@
     <span class="logo-min">MIN</span>
   </div>
   <div class="nav-links">
-    <a href="#about" data-hover>About</a>
-    <a href="#services" data-hover>Services</a>
-    <a href="#methodology" data-hover>Methodology</a>
-    <a href="#contact" data-hover>Contact</a>
+    <a href="#problems">Problem</a>
+    <a href="#services">Services</a>
+    <a href="#how">Process</a>
   </div>
   <div class="nav-contact">
-    <a href="#contact" data-hover><span>Get in Touch</span></a>
+    <a href="#contact"><span>Get in Touch</span></a>
   </div>
 </nav>
 
@@ -1659,10 +1653,11 @@
   <div class="hero-cell" style="grid-column: span 2; grid-row: 2;"></div>
   <div class="hero-title-area">
     <h1 class="hero-title">
-      <span class="line"><span class="word">Do</span> <span class="word">more</span></span>
-      <span class="line"><span class="word">with</span> <em>less</em></span>
+      <span class="line"><span class="word">Your numbers</span></span>
+      <span class="line"><span class="word">don't</span> <em>match.</em></span>
+      <span class="line"><span class="word">We fix that.</span></span>
     </h1>
-    <p class="hero-subtitle">Business analytics for companies that act on data</p>
+    <p class="hero-subtitle">Attribution and measurement for DTC brands running paid media</p>
   </div>
   <div class="hero-cell" style="grid-column: span 2; grid-row: 3/5;"></div>
   <div class="hero-red-block">
@@ -1679,8 +1674,8 @@
   <div class="hero-scroll">
     <span class="scroll-indicator">Scroll</span>
   </div>
-  <div class="hero-letter">
-    <span>Δ</span>
+  <div class="hero-accent">
+    <span class="accent-number">02</span>
   </div>
   <div class="hero-cell" style="grid-column: span 8; grid-row: 8;"></div>
 </section>
@@ -1692,14 +1687,12 @@
     <span class="section-number">01</span>
   </div>
   <div class="about-content">
-    <span class="about-dropcap">W</span>
-    <p class="about-text">e build the analytical infrastructure that lets you make better decisions faster. Attribution models, forecasts, customer segmentation, pipeline analysis, whatever the question we find the answer in your data and make it actionable.</p>
-    <p class="about-text">Small team. Senior practitioners. No dashboards that nobody opens.</p>
+    <p class="about-text">Meta says one thing. GA4 says another. Shopify says something else. You're spending real money on ads and have no idea what's actually working. We fix the tracking, build measurement systems you can trust, and show you where to put your next dollar.</p>
   </div>
   <div class="about-aside">
     <div class="aside-item">
       <p class="aside-label">Focus</p>
-      <p class="aside-value">Analytics that drives decisions, not reports that collect dust</p>
+      <p class="aside-value">DTC attribution and measurement that actually matches</p>
     </div>
     <div class="aside-item">
       <p class="aside-label">Approach</p>
@@ -1707,7 +1700,56 @@
     </div>
     <div class="aside-item">
       <p class="aside-label">Outcome</p>
-      <p class="aside-value">Faster decisions<br>Less waste<br>Compounding returns</p>
+      <p class="aside-value">Numbers you trust<br>Decisions you can make<br>Money you stop wasting</p>
+    </div>
+  </div>
+</section>
+
+<!-- Problems -->
+<section class="problems" id="problems">
+  <div class="problems-header">
+    <h2 class="problems-title">Sound familiar?</h2>
+    <p class="problems-desc">The measurement problems we solve every week.</p>
+  </div>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <p>GA4 shows 50 conversions, Meta shows 120, Shopify shows 85</p>
+    </div>
+    <div class="problem-card">
+      <p>ROAS tanked after iOS 14.5 and you don't know what's real</p>
+    </div>
+    <div class="problem-card">
+      <p>CAPI is "set up" but you're not sure it's actually working</p>
+    </div>
+    <div class="problem-card">
+      <p>Scaling spend but flying blind on channel efficiency</p>
+    </div>
+    <div class="problem-card">
+      <p>Triple Whale / Northbeam gave you more dashboards, not more clarity</p>
+    </div>
+    <div class="problem-card">
+      <p>Making budget decisions based on numbers you don't trust</p>
+    </div>
+  </div>
+</section>
+
+<!-- Who This Is For -->
+<section class="who" id="who">
+  <div class="who-sidebar">
+    <h2 class="who-title">This is for you if:</h2>
+  </div>
+  <div class="who-content">
+    <div class="who-item">
+      <p>You can't reconcile GA4, Shopify, and ad platform numbers</p>
+    </div>
+    <div class="who-item">
+      <p>Every platform takes credit for the same sale</p>
+    </div>
+    <div class="who-item">
+      <p>You've done the CAPI setup, enhanced conversions, all of it. Still doesn't add up</p>
+    </div>
+    <div class="who-item">
+      <p>You're making budget decisions on numbers you don't trust</p>
     </div>
   </div>
 </section>
@@ -1716,82 +1758,64 @@
 <section class="services" id="services">
   <div class="services-header">
     <h2 class="services-title">What we do</h2>
-    <p class="services-desc">From raw data to decisions. Every engagement ends with assets you own and recommendations you can act on.</p>
+    <p class="services-desc">Three ways to fix your measurement. Start with an audit, go deeper with modeling, or let us build the infrastructure.</p>
   </div>
   <div class="services-grid">
     <div class="service-card">
       <span class="service-number">01</span>
-      <h3 class="service-name">Marketing Mix Modeling</h3>
-      <p class="service-desc">Channel attribution and budget optimization. Know what's working before you spend more.</p>
+      <h3 class="service-name">Attribution Audit</h3>
+      <p class="service-desc">Find out why your numbers don't match. We audit your tracking setup across GA4, Meta, Google Ads, and Shopify. You get a prioritized fix list and a clear picture of what's broken.</p>
       <div class="service-icon">↗</div>
     </div>
     <div class="service-card">
       <span class="service-number">02</span>
-      <h3 class="service-name">Customer Intelligence</h3>
-      <p class="service-desc">Segmentation, lifetime value, churn prediction. Understand who buys and why they leave.</p>
+      <h3 class="service-name">Marketing Mix Modeling</h3>
+      <p class="service-desc">Know what's actually driving revenue. Channel-level attribution that accounts for iOS changes, delayed conversions, and cross-channel effects.</p>
       <div class="service-icon">↗</div>
     </div>
     <div class="service-card">
       <span class="service-number">03</span>
-      <h3 class="service-name">Pipeline & Funnel Analytics</h3>
-      <p class="service-desc">Conversion modeling, lead scoring, sales cycle analysis. See where deals stall and why.</p>
-      <div class="service-icon">↗</div>
-    </div>
-    <div class="service-card">
-      <span class="service-number">04</span>
-      <h3 class="service-name">Forecasting</h3>
-      <p class="service-desc">Sales, demand, capacity. Plan with confidence intervals, not gut feel.</p>
-      <div class="service-icon">↗</div>
-    </div>
-    <div class="service-card">
-      <span class="service-number">05</span>
-      <h3 class="service-name">Pricing & Promotion</h3>
-      <p class="service-desc">Elasticity analysis, discount optimization. Stop leaving margin on the table.</p>
-      <div class="service-icon">↗</div>
-    </div>
-    <div class="service-card">
-      <span class="service-number">06</span>
-      <h3 class="service-name">BI Infrastructure</h3>
-      <p class="service-desc">Dashboards, reporting, data pipelines. Self-serve analytics that people actually use.</p>
+      <h3 class="service-name">Measurement Infrastructure</h3>
+      <p class="service-desc">Server-side tracking, CAPI setup, GA4 configuration, UTM hygiene, conversion deduplication. The plumbing that makes everything else work.</p>
       <div class="service-icon">↗</div>
     </div>
   </div>
 </section>
 
 <!-- Methodology -->
-<section class="methodology" id="methodology">
+<section class="methodology" id="how">
   <div class="methodology-header">
     <h2 class="methodology-title">How we work</h2>
-    <p class="methodology-desc">Scope → Build → Validate → Deliver. Every engagement ends with assets you own and recommendations you can act on.</p>
+    <p class="methodology-desc">Most engagements: 2-6 weeks. You get the deliverables, the documentation, and the confidence to act.</p>
   </div>
   <div class="methodology-grid">
     <div class="method-card">
       <span class="method-number">01</span>
-      <h3 class="method-title">Scope</h3>
-      <p class="method-desc">Define the question. Audit the data. Agree on what success looks like before we start building.</p>
+      <h3 class="method-title">Audit</h3>
+      <p class="method-desc">We map your current tracking setup, identify gaps and misconfigurations, and document exactly where your numbers diverge and why.</p>
       <div class="method-tags">
         <span class="method-tag">Discovery</span>
         <span class="method-tag">Data Audit</span>
-        <span class="method-tag">Requirements</span>
+        <span class="method-tag">Gap Analysis</span>
       </div>
     </div>
     <div class="method-card">
       <span class="method-number">02</span>
-      <h3 class="method-title">Build</h3>
-      <p class="method-desc">Models, pipelines, dashboards—whatever the project needs. Iterative delivery with weekly visibility.</p>
+      <h3 class="method-title">Fix</h3>
+      <p class="method-desc">Prioritized fixes based on impact. We either implement directly or hand off a detailed spec to your team. No black boxes.</p>
       <div class="method-tags">
-        <span class="method-tag">Analysis</span>
-        <span class="method-tag">Modeling</span>
-        <span class="method-tag">Iteration</span>
+        <span class="method-tag">Implementation</span>
+        <span class="method-tag">Testing</span>
+        <span class="method-tag">Validation</span>
       </div>
     </div>
     <div class="method-card">
       <span class="method-number">03</span>
-      <h3 class="method-title">Validate & Deliver</h3>
-      <p class="method-desc">Sanity checks, documentation, handoff. You get the code, the logic, and the confidence to act on it.</p>
+      <h3 class="method-title">Measure</h3>
+      <p class="method-desc">Once tracking is solid, we build the measurement layer: MMM, incrementality frameworks, or custom reporting that you can actually trust.</p>
       <div class="method-tags">
-        <span class="method-tag">QA</span>
-        <span class="method-tag">Documentation</span>
+        <span class="method-tag">Modeling</span>
+        <span class="method-tag">Reporting</span>
         <span class="method-tag">Handoff</span>
       </div>
     </div>
@@ -1805,8 +1829,18 @@
     <p class="resources-desc">How we think about measurement, modeling, and making decisions with data.</p>
   </div>
   <div class="resources-grid">
-    <a href="mmm-mta-incrementality.html" class="resource-card">
+    <a href="mmm-case-study.html" class="resource-card">
       <span class="resource-number">01</span>
+      <span class="resource-tag">Case Study</span>
+      <h3 class="resource-name">We found where 39% of a home decor brand's marketing effort was going to die</h3>
+      <p class="resource-excerpt">Their email list was massive. Their open rates looked fine. But the MMM told a different story. Here's what 113 weeks of data revealed.</p>
+      <div class="resource-cta">
+        <span>Read case study</span>
+        <span class="resource-arrow">→</span>
+      </div>
+    </a>
+    <a href="mmm-mta-incrementality.html" class="resource-card">
+      <span class="resource-number">02</span>
       <span class="resource-tag">Methodology</span>
       <h3 class="resource-name">MMM vs. MTA vs. Incrementality</h3>
       <p class="resource-excerpt">Three measurement methods. Different jobs. A framework for picking the right one based on the decision you need to make.</p>
@@ -1816,7 +1850,7 @@
       </div>
     </a>
     <a href="dtc-maturity-model.html" class="resource-card">
-      <span class="resource-number">02</span>
+      <span class="resource-number">03</span>
       <span class="resource-tag">Framework</span>
       <h3 class="resource-name">DTC Analytics Maturity Model</h3>
       <p class="resource-excerpt">Five levels. Six domains. A framework for assessing where you are and what to build next.</p>
@@ -1828,80 +1862,22 @@
   </div>
 </section>
 
-<!-- Tech Stack -->
-<section class="stack" id="stack">
-  <div class="stack-header">
-    <p class="section-label">Technical</p>
-    <span class="section-number">02</span>
-  </div>
-  <div class="stack-content">
-    <p class="stack-intro">Modern data stack. Open source where possible. We work with what you have or help you build what you need.</p>
-  </div>
-  <div class="stack-grid">
-    <div class="stack-category">
-      <p class="stack-category-title">Analysis</p>
-      <p class="stack-items">Python<br>SQL<br>R<br>dbt</p>
-    </div>
-    <div class="stack-category">
-      <p class="stack-category-title">Modeling</p>
-      <p class="stack-items">Scikit-learn<br>PyMC<br>Prophet<br>XGBoost</p>
-    </div>
-    <div class="stack-category">
-      <p class="stack-category-title">Visualization</p>
-      <p class="stack-items">Looker<br>Tableau<br>Streamlit<br>Hex</p>
-    </div>
-    <div class="stack-category">
-      <p class="stack-category-title">Data</p>
-      <p class="stack-items">BigQuery<br>Snowflake<br>Redshift<br>Postgres</p>
-    </div>
-    <div class="stack-category">
-      <p class="stack-category-title">Orchestration</p>
-      <p class="stack-items">Airflow<br>Prefect<br>Dagster<br>Fivetran</p>
-    </div>
-    <div class="stack-category">
-      <p class="stack-category-title">Infrastructure</p>
-      <p class="stack-items">GCP<br>AWS<br>Docker<br>Git</p>
-    </div>
-  </div>
-</section>
-
-<!-- Metrics -->
-<section class="metrics" id="metrics">
-  <div class="metrics-content">
-    <div class="metric-item">
-      <span class="metric-value">Senior</span>
-      <span class="metric-label">Practitioners Only</span>
-    </div>
-    <div class="metric-item">
-      <span class="metric-value">Weeks</span>
-      <span class="metric-label">Not Months</span>
-    </div>
-    <div class="metric-item">
-      <span class="metric-value">Yours</span>
-      <span class="metric-label">All Deliverables</span>
-    </div>
-    <div class="metric-item">
-      <span class="metric-value">Zero</span>
-      <span class="metric-label">Fluff</span>
-    </div>
-  </div>
-</section>
-
 <!-- Contact -->
 <section class="contact" id="contact">
   <div class="contact-left">
-    <p class="contact-label">Get in Touch</p>
-    <h2 class="contact-title">Ready to put your data to work?</h2>
-    <a href="mailto:heya@maxmin.agency" class="contact-email">heya@maxmin.agency</a>
+    <p class="contact-label">Get Started</p>
+    <h2 class="contact-title">Not sure where you stand? Take the free assessment.</h2>
+    <a href="https://assessment.maxmin.agency/" class="contact-cta">5-min DTC Analytics Assessment →</a>
+    <a href="mailto:heya@maxmin.agency" class="contact-email">or email heya@maxmin.agency</a>
   </div>
   <div class="contact-right">
     <div class="contact-block">
-      <p class="contact-block-title">Engagement</p>
-      <p class="contact-block-content">Most projects: 4-8 weeks. Ongoing support available. All code and assets delivered to you.</p>
+      <p class="contact-block-title">Timeline</p>
+      <p class="contact-block-content">Most projects: 2-6 weeks. Scoped to what you actually need.</p>
     </div>
     <div class="contact-block">
       <p class="contact-block-title">Fit</p>
-      <p class="contact-block-content">We work with companies that have data and want to use it. If you're guessing when you could be knowing, let's talk.</p>
+      <p class="contact-block-content">DTC brands running paid media on Meta and Google who are tired of guessing what's working.</p>
     </div>
     <div class="contact-block">
       <p class="contact-block-title">Location</p>
